@@ -7,7 +7,7 @@ import BottomMessage from "./BottomMessage";
 
 export default function HomeClient() {
   return (
-    <div className="page-transition">
+    <div>
       <HeroSection />
       <WhatWeDoSection />
       <LatestJournal />

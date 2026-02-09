@@ -6,7 +6,7 @@ import { journalEntries } from "@/data/journal";
 
 export default function JournalClient() {
   return (
-    <div className="page-transition">
+    <div>
       <section className="min-h-[50vh] flex items-end pb-20 px-6">
         <div className="max-w-[700px] mx-auto w-full">
           <ScrollReveal>

@@ -15,7 +15,7 @@ export default function ContactClient() {
   };
 
   return (
-    <div className="page-transition">
+    <div>
       {/* Dye overlay */}
       <div
         className="fixed inset-0 pointer-events-none z-0 transition-all duration-[3000ms]"

@@ -8,7 +8,7 @@ export default function AboutClient() {
   const { currentColor, combinedProgress } = useColor();
 
   return (
-    <div className="page-transition">
+    <div>
       {/* Hero — full width bold */}
       <section className="min-h-[70vh] flex items-center px-6 md:px-16 lg:px-24">
         <div className="max-w-[900px]">
