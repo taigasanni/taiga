@@ -1,25 +1,31 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
 import { journalEntries } from "@/data/journal";
 
 export default function JournalClient() {
   return (
     <div>
-      <section className="min-h-[50vh] flex items-end pb-20 px-6">
-        <div className="max-w-[700px] mx-auto w-full">
+      <section className="min-h-[50vh] flex items-end pb-20 px-6 md:px-16 lg:px-24">
+        <div className="max-w-[900px] w-full">
           <ScrollReveal>
-            <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/40 mb-4 uppercase">
+            <p className="text-sm tracking-[0.3em] text-[#1a1a1a]/30 mb-6 uppercase">
               Journal
             </p>
-            <h1 className="text-[#1a1a1a]">思考の記録</h1>
+            <h1
+              className="text-[#1a1a1a]"
+              style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 200 }}
+            >
+              思考の記録
+            </h1>
           </ScrollReveal>
         </div>
       </section>
 
-      <section className="pb-32 px-6">
-        <div className="max-w-[700px] mx-auto">
+      <section className="pb-32 px-6 md:px-16 lg:px-24">
+        <div className="max-w-[1100px]">
           {/* Category filter */}
           <ScrollReveal>
             <div className="flex gap-6 mb-16 pb-4 border-b border-[#1a1a1a]/5">
@@ -35,29 +41,55 @@ export default function JournalClient() {
             </div>
           </ScrollReveal>
 
-          {/* Articles list */}
-          <div className="space-y-0">
+          {/* Articles grid with eyecatch */}
+          <div className="space-y-20">
             {journalEntries.map((entry, i) => (
               <ScrollReveal key={entry.slug} delay={i * 0.08}>
                 <Link
                   href={`/journal/${entry.slug}`}
-                  className="group block py-10 border-b border-[#1a1a1a]/5 no-underline"
+                  className="group block no-underline"
                 >
-                  <div className="flex flex-col gap-3">
-                    <div className="flex items-center gap-4">
-                      <span className="text-xs text-[#1a1a1a]/30 tracking-wider">
-                        {entry.category}
-                      </span>
-                      <span className="text-xs text-[#1a1a1a]/20">
-                        {entry.date}
-                      </span>
+                  <div className="flex flex-col md:flex-row gap-6 md:gap-10">
+                    {/* Eyecatch image */}
+                    <div className="md:w-2/5 shrink-0">
+                      <div className="relative aspect-[16/10] bg-[#1a1a1a]/[0.03] overflow-hidden">
+                        {entry.eyecatch ? (
+                          <Image
+                            src={entry.eyecatch}
+                            alt={entry.eyecatchAlt || entry.title}
+                            fill
+                            className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center group-hover:bg-[#1a1a1a]/[0.05] transition-colors duration-500">
+                            <p className="text-[#1a1a1a]/10 text-xs tracking-wider">
+                              Eyecatch
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <h2 className="text-[#1a1a1a] group-hover:opacity-60 transition-opacity duration-300 text-xl md:text-2xl">
-                      {entry.title}
-                    </h2>
-                    <p className="text-[#1a1a1a]/40 text-sm max-w-lg">
-                      {entry.excerpt}
-                    </p>
+
+                    {/* Text content */}
+                    <div className="flex flex-col justify-center">
+                      <div className="flex items-center gap-4 mb-3">
+                        <span className="text-xs text-[#1a1a1a]/30 tracking-wider">
+                          {entry.category}
+                        </span>
+                        <span className="text-xs text-[#1a1a1a]/20">
+                          {entry.date}
+                        </span>
+                      </div>
+                      <h2
+                        className="text-[#1a1a1a] group-hover:opacity-60 transition-opacity duration-300 mb-3"
+                        style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)", fontWeight: 300 }}
+                      >
+                        {entry.title}
+                      </h2>
+                      <p className="text-[#1a1a1a]/35 text-sm leading-relaxed max-w-md">
+                        {entry.excerpt}
+                      </p>
+                    </div>
                   </div>
                 </Link>
               </ScrollReveal>

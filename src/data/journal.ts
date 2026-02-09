@@ -6,6 +6,8 @@ export interface JournalEntry {
   excerpt: string;
   content: string;
   themeColor: { h: number; s: number; l: number };
+  eyecatch?: string; // path to eyecatch image
+  eyecatchAlt?: string;
 }
 
 export const journalEntries: JournalEntry[] = [

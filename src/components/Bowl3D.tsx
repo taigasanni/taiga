@@ -200,7 +200,7 @@ export default function Bowl3D() {
     const r2 = parseInt(accent.slice(1, 3), 16);
     const g2 = parseInt(accent.slice(3, 5), 16);
     const b2 = parseInt(accent.slice(5, 7), 16);
-    const t = combinedProgress * 0.6;
+    const t = combinedProgress * 0.35;
     const r = Math.round(r1 + (r2 - r1) * t);
     const g = Math.round(g1 + (g2 - g1) * t);
     const b = Math.round(b1 + (b2 - b1) * t);
@@ -221,13 +221,15 @@ export default function Bowl3D() {
       />
       <meshPhysicalMaterial
         color={bowlColor}
-        roughness={0.8}
+        roughness={0.85}
         metalness={0.0}
-        clearcoat={0.1}
-        clearcoatRoughness={0.9}
-        transmission={0.02}
-        thickness={0.5}
-        envMapIntensity={0.3}
+        clearcoat={0.05}
+        clearcoatRoughness={0.95}
+        transmission={0.15}
+        thickness={0.8}
+        envMapIntensity={0.15}
+        transparent
+        opacity={0.9}
         side={THREE.DoubleSide}
       />
     </mesh>

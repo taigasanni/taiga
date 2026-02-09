@@ -15,8 +15,8 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
   return (
     <ColorProvider>
       <DyeOverlay />
-      {/* 3D Bowl — fixed background across all pages */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
+      {/* 3D Bowl — behind content, translucent background element */}
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-35">
         <div className="w-full h-full pointer-events-auto">
           <BowlCanvas />
         </div>

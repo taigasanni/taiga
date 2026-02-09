@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
 import { useColor } from "@/lib/ColorContext";
 import { hslToString } from "@/lib/colorUtils";
@@ -12,9 +13,8 @@ interface Props {
 }
 
 export default function JournalArticleClient({ entry }: Props) {
-  const { currentColor, combinedProgress, setArticleColor } = useColor();
+  const { combinedProgress, setArticleColor } = useColor();
 
-  // Set article theme color
   useEffect(() => {
     setArticleColor(entry.themeColor);
   }, [entry.themeColor, setArticleColor]);
@@ -27,13 +27,13 @@ export default function JournalArticleClient({ entry }: Props) {
       <div
         className="fixed inset-0 pointer-events-none z-0 transition-all duration-[3000ms]"
         style={{
-          background: `radial-gradient(ellipse at 50% 30%, ${hslToString(entry.themeColor, combinedProgress * 0.1)} 0%, transparent 60%)`,
+          background: `radial-gradient(ellipse at 50% 30%, ${hslToString(entry.themeColor, combinedProgress * 0.08)} 0%, transparent 60%)`,
         }}
       />
 
       {/* Back link */}
-      <section className="pt-32 pb-4 px-6">
-        <div className="max-w-[700px] mx-auto">
+      <section className="pt-32 pb-4 px-6 md:px-16 lg:px-24">
+        <div className="max-w-[800px]">
           <Link
             href="/journal"
             className="text-sm text-[#1a1a1a]/30 no-underline hover:text-[#1a1a1a]/60 transition-colors duration-300"
@@ -44,8 +44,8 @@ export default function JournalArticleClient({ entry }: Props) {
       </section>
 
       {/* Article header */}
-      <section className="pt-12 pb-20 px-6">
-        <div className="max-w-[700px] mx-auto">
+      <section className="pt-12 pb-8 px-6 md:px-16 lg:px-24">
+        <div className="max-w-[800px]">
           <ScrollReveal>
             <div className="flex items-center gap-4 mb-8">
               <span className="text-xs text-[#1a1a1a]/30 tracking-wider">
@@ -53,17 +53,47 @@ export default function JournalArticleClient({ entry }: Props) {
               </span>
               <span className="text-xs text-[#1a1a1a]/20">{entry.date}</span>
             </div>
-            <h1 className="text-[#1a1a1a] mb-4">{entry.title}</h1>
+            <h1
+              className="text-[#1a1a1a]"
+              style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)", fontWeight: 200 }}
+            >
+              {entry.title}
+            </h1>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Eyecatch image */}
+      <section className="py-10 px-6 md:px-16 lg:px-24">
+        <div className="max-w-[900px]">
+          <ScrollReveal>
+            <div className="relative aspect-[2/1] bg-[#1a1a1a]/[0.03] overflow-hidden">
+              {entry.eyecatch ? (
+                <Image
+                  src={entry.eyecatch}
+                  alt={entry.eyecatchAlt || entry.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <p className="text-[#1a1a1a]/10 text-sm tracking-wider">
+                    アイキャッチ画像
+                  </p>
+                </div>
+              )}
+            </div>
           </ScrollReveal>
         </div>
       </section>
 
       {/* Article body */}
-      <section className="pb-32 px-6">
-        <div className="max-w-[700px] mx-auto">
+      <section className="pb-32 px-6 md:px-16 lg:px-24">
+        <div className="max-w-[700px]">
           {paragraphs.map((paragraph, i) => (
             <ScrollReveal key={i} delay={i * 0.05}>
-              <p className="text-[#1a1a1a]/60 leading-[2.2] mb-8">
+              <p className="text-[#1a1a1a]/55 leading-[2.2] mb-8">
                 {paragraph}
               </p>
             </ScrollReveal>
@@ -72,12 +102,12 @@ export default function JournalArticleClient({ entry }: Props) {
       </section>
 
       {/* Back to journal */}
-      <section className="pb-32 px-6">
-        <div className="max-w-[700px] mx-auto">
+      <section className="pb-32 px-6 md:px-16 lg:px-24">
+        <div className="max-w-[700px]">
           <ScrollReveal>
             <Link
               href="/journal"
-              className="text-sm text-[#1a1a1a]/40 tracking-wider no-underline hover:text-[#1a1a1a]/60 transition-colors duration-300"
+              className="text-sm text-[#1a1a1a]/35 tracking-wider no-underline hover:text-[#1a1a1a]/60 transition-colors duration-300"
             >
               ← すべての記事へ
             </Link>
