@@ -9,7 +9,7 @@ export default function BottomMessage() {
   const { currentColor, combinedProgress } = useColor();
 
   return (
-    <section className="relative py-32 md:py-48 px-6">
+    <section className="relative py-40 md:py-56 px-6">
       {/* Stronger dye at the bottom */}
       <div
         className="absolute inset-0 pointer-events-none transition-all duration-[3000ms]"
@@ -18,11 +18,15 @@ export default function BottomMessage() {
         }}
       />
 
-      <div className="relative max-w-[700px] mx-auto text-center">
+      <div className="relative max-w-[900px] mx-auto text-center">
         <ScrollReveal>
           <p
-            className="text-[#1a1a1a]/40 text-lg mb-8"
-            style={{ fontWeight: 300, letterSpacing: "0.08em" }}
+            className="text-[#1a1a1a]/30 mb-10"
+            style={{
+              fontSize: "clamp(1.2rem, 3vw, 2rem)",
+              fontWeight: 200,
+              letterSpacing: "0.1em",
+            }}
           >
             あなたと共に色づきました
           </p>
@@ -31,9 +35,9 @@ export default function BottomMessage() {
         <ScrollReveal delay={0.2}>
           <Link
             href="/contact"
-            className="inline-block text-sm tracking-[0.2em] text-[#1a1a1a]/60 no-underline border-b border-[#1a1a1a]/15 pb-1 hover:text-[#1a1a1a] hover:border-[#1a1a1a]/30 transition-all duration-300"
+            className="inline-block text-sm tracking-[0.25em] text-[#1a1a1a]/50 no-underline border-b border-[#1a1a1a]/10 pb-2 hover:text-[#1a1a1a] hover:border-[#1a1a1a]/25 transition-all duration-500 uppercase"
           >
-            Contact Us
+            Get in Touch
           </Link>
         </ScrollReveal>
       </div>

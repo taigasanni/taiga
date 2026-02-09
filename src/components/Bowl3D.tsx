@@ -6,28 +6,28 @@ import * as THREE from "three";
 import { useColor } from "@/lib/ColorContext";
 import { hslToHex } from "@/lib/colorUtils";
 
-// Generate bowl geometry vertices
+// Generate bowl geometry — rounded bottom, no pointed tip
 function createBowlGeometry() {
   const points: THREE.Vector2[] = [];
-  const segments = 30;
+  const segments = 40;
 
   for (let i = 0; i <= segments; i++) {
     const t = i / segments;
-    // Bowl profile curve: wider at top, narrow at bottom
-    const y = t * 2 - 0.5; // -0.5 to 1.5
+    const y = t * 1.8 - 0.3; // -0.3 to 1.5
     let x: number;
 
-    if (t < 0.1) {
-      // Bottom (flat)
-      x = t * 8 * 0.3;
-    } else if (t < 0.8) {
-      // Bowl body (smooth curve)
-      const bodyT = (t - 0.1) / 0.7;
-      x = 0.24 + Math.pow(bodyT, 0.6) * 0.76;
+    if (t < 0.15) {
+      // Flat rounded bottom — smooth semicircle
+      const bottomT = t / 0.15;
+      x = Math.sin(bottomT * Math.PI * 0.5) * 0.45;
+    } else if (t < 0.75) {
+      // Bowl body — gentle outward curve
+      const bodyT = (t - 0.15) / 0.6;
+      x = 0.45 + Math.pow(bodyT, 0.5) * 0.6;
     } else {
-      // Rim (slight outward flare)
-      const rimT = (t - 0.8) / 0.2;
-      x = 1.0 + rimT * 0.05;
+      // Rim — slight outward flare then inward lip
+      const rimT = (t - 0.75) / 0.25;
+      x = 1.05 + Math.sin(rimT * Math.PI * 0.5) * 0.03;
     }
 
     points.push(new THREE.Vector2(x, y));
@@ -48,7 +48,6 @@ export default function Bowl3D() {
 
   const bowlPoints = useMemo(() => createBowlGeometry(), []);
 
-  // Store original positions after geometry is created
   const geometryRefCallback = useCallback(
     (node: THREE.LatheGeometry | null) => {
       if (node && !originalPositions.current) {
@@ -79,15 +78,15 @@ export default function Bowl3D() {
     if (!meshRef.current || !geometryRef.current || !originalPositions.current)
       return;
 
-    // Slow auto-rotation (15-20 seconds per revolution)
-    meshRef.current.rotation.y += 0.004;
+    // Slow auto-rotation
+    meshRef.current.rotation.y += 0.003;
 
-    // Slight floating motion
-    meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
+    // Gentle floating motion
+    meshRef.current.position.y =
+      0.1 + Math.sin(state.clock.elapsedTime * 0.4) * 0.04;
 
-    // Deformation logic
+    // Deformation
     if (!isHovering.current) {
-      // Spring back to original
       deformStrength.current *= 0.95;
     }
 
@@ -100,21 +99,15 @@ export default function Bowl3D() {
         const oy = original[i * 3 + 1];
         const oz = original[i * 3 + 2];
 
-        // Calculate world position of vertex
         const worldPos = new THREE.Vector3(ox, oy, oz);
         meshRef.current!.localToWorld(worldPos);
 
-        // Distance from pointer
         const dist = worldPos.distanceTo(deformTarget.current);
         const influence =
           Math.max(0, 1 - dist / 1.5) * deformStrength.current;
 
         if (influence > 0) {
-          // Pull vertex toward pointer
-          const dir = deformTarget.current
-            .clone()
-            .sub(worldPos)
-            .normalize();
+          const dir = deformTarget.current.clone().sub(worldPos).normalize();
           meshRef.current!.worldToLocal(dir);
 
           positions.setXYZ(
@@ -124,7 +117,6 @@ export default function Bowl3D() {
             oz + dir.z * influence * 0.3
           );
         } else {
-          // Spring back
           const cx = positions.getX(i);
           const cy = positions.getY(i);
           const cz = positions.getZ(i);
@@ -142,11 +134,10 @@ export default function Bowl3D() {
     }
   });
 
-  // Bowl color based on dye progress
+  // Bowl color
   const bowlColor = useMemo(() => {
     const white = "#fafafa";
     const accent = hslToHex(currentColor);
-    // Interpolate between white and accent based on combinedProgress
     const r1 = parseInt(white.slice(1, 3), 16);
     const g1 = parseInt(white.slice(3, 5), 16);
     const b1 = parseInt(white.slice(5, 7), 16);
@@ -165,8 +156,8 @@ export default function Bowl3D() {
       ref={meshRef}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      scale={1.2}
-      position={[0, 0.2, 0]}
+      scale={1.4}
+      position={[0, 0.1, 0]}
     >
       <latheGeometry
         ref={geometryRefCallback}
