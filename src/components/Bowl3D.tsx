@@ -265,9 +265,9 @@ export default function Bowl3D() {
         clearcoatRoughness={0.9}
         transmission={0.1}
         thickness={0.6}
-        envMapIntensity={0.2}
+        envMapIntensity={0.25}
         transparent
-        opacity={0.85}
+        opacity={0.92}
         side={THREE.DoubleSide}
       />
     </mesh>

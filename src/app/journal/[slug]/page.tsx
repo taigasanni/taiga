@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props) {
   if (!entry) return {};
 
   return {
-    title: `${entry.title} — Hakki Journal`,
+    title: `${entry.title} — 白器 Journal`,
     description: entry.excerpt,
   };
 }

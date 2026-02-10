@@ -91,13 +91,59 @@ export default function JournalArticleClient({ entry }: Props) {
       {/* Article body */}
       <section className="pb-32 px-6 md:px-16 lg:px-24">
         <div className="max-w-[700px]">
-          {paragraphs.map((paragraph, i) => (
-            <ScrollReveal key={i} delay={i * 0.05}>
-              <p className="text-[#1a1a1a]/75 leading-[2.2] mb-8">
-                {paragraph}
-              </p>
-            </ScrollReveal>
-          ))}
+          {paragraphs.map((paragraph, i) => {
+            // Check for HTML heading tags
+            const h2Match = paragraph.match(/^<h2>(.*?)<\/h2>$/);
+            const h3Match = paragraph.match(/^<h3>(.*?)<\/h3>$/);
+            const h4Match = paragraph.match(/^<h4>(.*?)<\/h4>$/);
+
+            if (h2Match) {
+              return (
+                <ScrollReveal key={i} delay={i * 0.05}>
+                  <h2
+                    className="text-[#1a1a1a] mt-16 mb-6"
+                    style={{ fontSize: "clamp(1.3rem, 3vw, 1.8rem)", fontWeight: 300, lineHeight: 1.6 }}
+                  >
+                    {h2Match[1]}
+                  </h2>
+                </ScrollReveal>
+              );
+            }
+
+            if (h3Match) {
+              return (
+                <ScrollReveal key={i} delay={i * 0.05}>
+                  <h3
+                    className="text-[#1a1a1a]/90 mt-12 mb-4"
+                    style={{ fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)", fontWeight: 400, lineHeight: 1.6 }}
+                  >
+                    {h3Match[1]}
+                  </h3>
+                </ScrollReveal>
+              );
+            }
+
+            if (h4Match) {
+              return (
+                <ScrollReveal key={i} delay={i * 0.05}>
+                  <h4
+                    className="text-[#1a1a1a]/85 mt-8 mb-3"
+                    style={{ fontSize: "clamp(1rem, 2vw, 1.15rem)", fontWeight: 500, lineHeight: 1.6 }}
+                  >
+                    {h4Match[1]}
+                  </h4>
+                </ScrollReveal>
+              );
+            }
+
+            return (
+              <ScrollReveal key={i} delay={i * 0.05}>
+                <p className="text-[#1a1a1a]/75 leading-[2.2] mb-8">
+                  {paragraph}
+                </p>
+              </ScrollReveal>
+            );
+          })}
         </div>
       </section>
 

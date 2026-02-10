@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import ScrollReveal from "./ScrollReveal";
 import { useColor } from "@/lib/ColorContext";
 import { hslToString } from "@/lib/colorUtils";
@@ -34,14 +35,26 @@ export default function AboutClient() {
         <div className="flex flex-col md:flex-row gap-12 md:gap-0">
           <div className="md:w-1/2 px-6 md:px-0 md:pl-16 lg:pl-24">
             <ScrollReveal>
-              <div className="relative aspect-[3/4] overflow-hidden">
-                <Image
-                  src="/image.jpg"
-                  alt="白器チーム"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <motion.div
+                className="relative aspect-[3/4] overflow-hidden"
+                whileHover={{ scale: 0.98 }}
+                transition={{ duration: 0.5 }}
+              >
+                <motion.div
+                  className="absolute inset-[-10%]"
+                  initial={{ scale: 1.1 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                >
+                  <Image
+                    src="/image.jpg"
+                    alt="白器チーム"
+                    fill
+                    className="object-cover"
+                  />
+                </motion.div>
+              </motion.div>
             </ScrollReveal>
           </div>
 
@@ -88,39 +101,86 @@ export default function AboutClient() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
             {[
               {
+                num: "01",
                 title: "本質を見る",
                 desc: "商品やサービスの核にある価値を見つけ出し、言語化します。表面的な訴求ではなく、本当の強みで勝負する。",
               },
               {
+                num: "02",
                 title: "正しく届ける",
                 desc: "誰に、どこで、どう伝えるか。戦略的にチャネルとメッセージを設計し、確実に届く形をつくります。",
               },
               {
+                num: "03",
                 title: "長く続ける",
                 desc: "一時的な数字ではなく、持続的に売れる仕組みを構築。クライアントのビジネスと共に成長します。",
               },
             ].map((item, i) => (
-              <ScrollReveal key={item.title} delay={i * 0.1}>
-                <div className="group">
-                  <div className="relative aspect-[4/3] overflow-hidden mb-8">
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: i * 0.15, ease: [0.25, 0.1, 0, 1] }}
+                className="group"
+              >
+                {/* Image with hover zoom + parallax */}
+                <div className="relative aspect-[4/3] overflow-hidden mb-8">
+                  <motion.div
+                    className="absolute inset-0"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                  >
                     <Image
                       src="/image.jpg"
                       alt={item.title}
                       fill
-                      className="object-cover"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.08]"
                     />
-                  </div>
-                  <h3
-                    className="text-[#1a1a1a] mb-4"
-                    style={{ fontSize: "clamp(1.25rem, 2vw, 1.75rem)", fontWeight: 400 }}
+                  </motion.div>
+                  {/* Number overlay */}
+                  <motion.div
+                    className="absolute top-4 left-4"
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: i * 0.15 + 0.4 }}
                   >
-                    {item.title}
-                  </h3>
-                  <p className="text-[#1a1a1a]/65 leading-[2]">
-                    {item.desc}
-                  </p>
+                    <span className="text-white/80 text-xs font-medium tracking-[0.3em]">
+                      {item.num}
+                    </span>
+                  </motion.div>
                 </div>
-              </ScrollReveal>
+                {/* Title with stagger */}
+                <motion.h3
+                  className="text-[#1a1a1a] mb-4"
+                  style={{ fontSize: "clamp(1.25rem, 2vw, 1.75rem)", fontWeight: 400 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: i * 0.15 + 0.25 }}
+                >
+                  {item.title}
+                </motion.h3>
+                {/* Description fade in */}
+                <motion.p
+                  className="text-[#1a1a1a]/65 leading-[2]"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: i * 0.15 + 0.4 }}
+                >
+                  {item.desc}
+                </motion.p>
+                {/* Animated underline on hover */}
+                <motion.div
+                  className="h-[1px] bg-[#1a1a1a]/10 mt-6 origin-left"
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, delay: i * 0.15 + 0.5 }}
+                />
+              </motion.div>
             ))}
           </div>
         </div>

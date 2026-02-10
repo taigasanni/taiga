@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import ScrollReveal from "./ScrollReveal";
 import { useColor } from "@/lib/ColorContext";
 import { hslToString } from "@/lib/colorUtils";
@@ -37,18 +38,31 @@ export default function WhatWeDoSection() {
         </div>
       </section>
 
-      {/* Image break */}
+      {/* Image break — with reveal animation */}
       <section className="px-6 md:px-16 lg:px-24">
-        <ScrollReveal>
-          <div className="relative aspect-[21/9] max-w-[1200px] overflow-hidden">
+        <motion.div
+          className="relative aspect-[21/9] max-w-[1200px] overflow-hidden"
+          initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
+          whileInView={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1.2, ease: [0.25, 0.1, 0, 1] }}
+          whileHover={{ scale: 0.98 }}
+        >
+          <motion.div
+            className="absolute inset-[-5%]"
+            initial={{ scale: 1.15 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          >
             <Image
               src="/image.jpg"
               alt="白器のマーケティング"
               fill
               className="object-cover"
             />
-          </div>
-        </ScrollReveal>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* 私たちの考え方 */}
