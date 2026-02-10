@@ -13,7 +13,7 @@ export default function AboutClient() {
     <div>
       {/* Hero */}
       <section className="min-h-[70vh] flex items-center px-6 md:px-16 lg:px-24">
-        <div className="max-w-[900px]">
+        <div className="max-w-[900px] mx-auto">
           <ScrollReveal>
             <p className="text-sm tracking-[0.3em] text-[#1a1a1a]/50 mb-8 uppercase font-medium">
               About
@@ -188,42 +188,45 @@ export default function AboutClient() {
 
       {/* Vision */}
       <section className="py-20 md:py-40 px-6 md:px-16 lg:px-24">
-        <ScrollReveal>
-          <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-12 uppercase font-medium">
-            Vision
-          </p>
-        </ScrollReveal>
+        <div className="max-w-[800px] mx-auto">
+          <ScrollReveal>
+            <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-12 uppercase font-medium">
+              Vision
+            </p>
+          </ScrollReveal>
 
-        <ScrollReveal>
-          <h2
-            className="text-[#1a1a1a] mb-12 max-w-[800px]"
-            style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)", fontWeight: 300 }}
-          >
-            売ることは、誇っていい。
-            <br />
-            いい商品なら、なおさらです。
-          </h2>
-        </ScrollReveal>
+          <ScrollReveal>
+            <h2
+              className="text-[#1a1a1a] mb-12"
+              style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)", fontWeight: 300 }}
+            >
+              売ることは、誇っていい。
+              <br />
+              いい商品なら、なおさらです。
+            </h2>
+          </ScrollReveal>
 
-        <ScrollReveal delay={0.1}>
-          <p className="text-[#1a1a1a]/70 leading-[2] max-w-[600px]">
-            私たちは、クライアントの成功が自分たちの成功だと信じています。
-            だからこそ、一つ一つの商品に真摯に向き合い、
-            最善の「売れる形」を追求します。
-          </p>
-        </ScrollReveal>
+          <ScrollReveal delay={0.1}>
+            <p className="text-[#1a1a1a]/70 leading-[2] max-w-[600px]">
+              私たちは、クライアントの成功が自分たちの成功だと信じています。
+              だからこそ、一つ一つの商品に真摯に向き合い、
+              最善の「売れる形」を追求します。
+            </p>
+          </ScrollReveal>
+        </div>
       </section>
 
       {/* Company info */}
       <section className="py-20 md:py-32 px-6 md:px-16 lg:px-24">
-        <ScrollReveal>
-          <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-16 uppercase font-medium">
-            Company
-          </p>
-        </ScrollReveal>
+        <div className="max-w-[700px] mx-auto">
+          <ScrollReveal>
+            <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-16 uppercase font-medium">
+              Company
+            </p>
+          </ScrollReveal>
 
-        <ScrollReveal>
-          <dl className="max-w-[600px] space-y-6">
+          <ScrollReveal>
+            <dl className="max-w-[600px] space-y-6">
             {[
               ["社名", "株式会社白器"],
               ["所在地", "東京都"],
@@ -241,6 +244,7 @@ export default function AboutClient() {
             ))}
           </dl>
         </ScrollReveal>
+        </div>
       </section>
     </div>
   );

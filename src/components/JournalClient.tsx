@@ -9,7 +9,7 @@ export default function JournalClient() {
   return (
     <div>
       <section className="min-h-[50vh] flex items-end pb-20 px-6 md:px-16 lg:px-24">
-        <div className="max-w-[900px] w-full">
+        <div className="max-w-[900px] mx-auto w-full">
           <ScrollReveal>
             <p className="text-sm tracking-[0.3em] text-[#1a1a1a]/50 mb-6 uppercase font-medium">
               Journal
@@ -25,7 +25,7 @@ export default function JournalClient() {
       </section>
 
       <section className="pb-32 px-6 md:px-16 lg:px-24">
-        <div className="max-w-[1100px]">
+        <div className="max-w-[1100px] mx-auto">
           {/* Category filter */}
           <ScrollReveal>
             <div className="flex gap-6 mb-16 pb-4 border-b border-[#1a1a1a]/10">

@@ -62,13 +62,13 @@ export default function CustomCursor() {
   return (
     <motion.div
       ref={cursorRef}
-      className="fixed top-0 left-0 z-[9999] pointer-events-none mix-blend-difference"
+      className="fixed top-0 left-0 z-[9999] pointer-events-none"
       style={{ willChange: "transform" }}
       animate={{
         width: isHovering ? 48 : 20,
         height: isHovering ? 48 : 20,
         opacity: isVisible ? 1 : 0,
-        backgroundColor: isHovering ? "rgba(220, 80, 70, 0.6)" : "rgba(120, 120, 120, 0.5)",
+        backgroundColor: isHovering ? "rgba(200, 60, 50, 0.7)" : "rgba(60, 60, 60, 0.45)",
       }}
       transition={{
         width: { duration: 0.25, ease: "easeOut" },

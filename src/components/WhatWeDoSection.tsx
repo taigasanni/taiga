@@ -13,7 +13,7 @@ export default function WhatWeDoSection() {
     <div>
       {/* Lead message */}
       <section className="py-32 md:py-48 px-6 md:px-16 lg:px-24">
-        <div className="max-w-[700px]">
+        <div className="max-w-[700px] mx-auto">
           <ScrollReveal>
             <p className="text-[#1a1a1a]/80 leading-[2.2] text-lg md:text-xl" style={{ fontWeight: 300 }}>
               世の中には、
@@ -41,7 +41,7 @@ export default function WhatWeDoSection() {
       {/* Image break — with reveal animation */}
       <section className="px-6 md:px-16 lg:px-24">
         <motion.div
-          className="relative aspect-[21/9] max-w-[1200px] overflow-hidden"
+          className="relative aspect-[21/9] max-w-[1200px] mx-auto overflow-hidden"
           initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
           whileInView={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
           viewport={{ once: true, margin: "-100px" }}
@@ -73,7 +73,7 @@ export default function WhatWeDoSection() {
             background: `linear-gradient(180deg, transparent 0%, ${hslToString(currentColor, combinedProgress * 0.05)} 50%, transparent 100%)`,
           }}
         />
-        <div className="relative max-w-[700px]">
+        <div className="relative max-w-[700px] mx-auto">
           <ScrollReveal>
             <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-6 uppercase font-medium">
               Our Approach
@@ -128,7 +128,7 @@ export default function WhatWeDoSection() {
 
       {/* やらないこと & やること — 2 columns */}
       <section className="py-20 md:py-40 px-6 md:px-16 lg:px-24">
-        <div className="max-w-[1100px]">
+        <div className="max-w-[1100px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-16">
             {/* やらないこと */}
             <div>
@@ -220,7 +220,7 @@ export default function WhatWeDoSection() {
             background: `linear-gradient(180deg, transparent 0%, ${hslToString(currentColor, combinedProgress * 0.06)} 50%, transparent 100%)`,
           }}
         />
-        <div className="relative max-w-[700px]">
+        <div className="relative max-w-[700px] mx-auto">
           <ScrollReveal>
             <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-6 uppercase font-medium">
               For You

@@ -33,7 +33,7 @@ export default function JournalArticleClient({ entry }: Props) {
 
       {/* Back link */}
       <section className="pt-32 pb-4 px-6 md:px-16 lg:px-24">
-        <div className="max-w-[800px]">
+        <div className="max-w-[800px] mx-auto">
           <Link
             href="/journal"
             className="text-sm text-[#1a1a1a]/50 no-underline hover:text-[#1a1a1a]/80 transition-colors duration-300"
@@ -45,7 +45,7 @@ export default function JournalArticleClient({ entry }: Props) {
 
       {/* Article header */}
       <section className="pt-12 pb-8 px-6 md:px-16 lg:px-24">
-        <div className="max-w-[800px]">
+        <div className="max-w-[800px] mx-auto">
           <ScrollReveal>
             <div className="flex items-center gap-4 mb-8">
               <span className="text-xs text-[#1a1a1a]/45 tracking-wider font-medium">
@@ -65,7 +65,7 @@ export default function JournalArticleClient({ entry }: Props) {
 
       {/* Eyecatch image */}
       <section className="py-10 px-6 md:px-16 lg:px-24">
-        <div className="max-w-[900px]">
+        <div className="max-w-[900px] mx-auto">
           <ScrollReveal>
             <div className="relative aspect-[2/1] bg-[#1a1a1a]/[0.05] overflow-hidden">
               {entry.eyecatch ? (
@@ -90,7 +90,7 @@ export default function JournalArticleClient({ entry }: Props) {
 
       {/* Article body */}
       <section className="pb-32 px-6 md:px-16 lg:px-24">
-        <div className="max-w-[700px]">
+        <div className="max-w-[700px] mx-auto">
           {paragraphs.map((paragraph, i) => {
             // Check for HTML heading tags
             const h2Match = paragraph.match(/^<h2>(.*?)<\/h2>$/);
@@ -149,7 +149,7 @@ export default function JournalArticleClient({ entry }: Props) {
 
       {/* Back to journal */}
       <section className="pb-32 px-6 md:px-16 lg:px-24">
-        <div className="max-w-[700px]">
+        <div className="max-w-[700px] mx-auto">
           <ScrollReveal>
             <Link
               href="/journal"

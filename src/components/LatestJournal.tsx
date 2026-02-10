@@ -10,7 +10,7 @@ export default function LatestJournal() {
 
   return (
     <section className="py-32 md:py-48 px-6 md:px-16 lg:px-24">
-      <div className="max-w-[1100px]">
+      <div className="max-w-[1100px] mx-auto">
         <ScrollReveal>
           <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-4 uppercase font-medium">
             Journal
