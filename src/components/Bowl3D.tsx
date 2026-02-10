@@ -81,34 +81,32 @@ export default function Bowl3D() {
     smoothScroll.current += (scrollProgress - smoothScroll.current) * 0.12;
     const scroll = smoothScroll.current;
 
-    // Auto-rotation — speeds up with scroll, reverses direction at deep scroll
-    const rotSpeed = scroll < 0.5
-      ? 0.003 + scroll * 0.008
-      : 0.007 - (scroll - 0.5) * 0.006;
+    // Auto-rotation — gentle constant spin, speeds up with scroll
+    const rotSpeed = 0.003 + scroll * 0.005;
     meshRef.current.rotation.y += rotSpeed;
 
-    // Floating + scroll-driven tilt & drift — more dramatic
+    // Always-active floating & gentle tilt (idle sway)
     meshRef.current.position.y =
-      0.1 + Math.sin(time * 0.4) * 0.06 - scroll * 0.5;
-    meshRef.current.rotation.x = scroll * 0.25 + Math.sin(time * 0.3) * scroll * 0.1;
-    meshRef.current.rotation.z = Math.sin(time * 0.3 + scroll * 2) * scroll * 0.15;
+      0.1 + Math.sin(time * 0.4) * 0.08 + Math.sin(time * 0.7) * 0.03 - scroll * 0.4;
+    meshRef.current.rotation.x =
+      Math.sin(time * 0.25) * 0.06 + scroll * 0.2;
+    meshRef.current.rotation.z =
+      Math.sin(time * 0.3) * 0.05 + Math.cos(time * 0.5) * 0.03 + scroll * 0.1;
 
-    // Scale morphs dramatically with scroll — asymmetric for organic feel
+    // Scale — gentle breathing always + more dramatic with scroll
     const base = 1.2;
+    const idleBreathe = Math.sin(time * 0.5) * 0.03;
     const scalePhase = scroll * Math.PI * 2;
     meshRef.current.scale.set(
-      base + Math.sin(scalePhase) * 0.2 + scroll * 0.15,
-      base - Math.sin(scalePhase * 0.7) * 0.15 - scroll * 0.1,
-      base + Math.cos(scalePhase * 1.3) * 0.18
+      base + idleBreathe + Math.sin(scalePhase) * 0.2 + scroll * 0.1,
+      base - idleBreathe * 0.5 - Math.sin(scalePhase * 0.7) * 0.15,
+      base + idleBreathe * 0.7 + Math.cos(scalePhase * 1.3) * 0.15
     );
 
-    // === Vertex deformation ===
+    // === Vertex deformation (always active) ===
     if (!isHovering.current) {
       deformStrength.current *= 0.95;
     }
-
-    const shouldDeform = deformStrength.current > 0.001 || scroll > 0.01;
-    if (!shouldDeform) return;
 
     const positions = geometryRef.current.attributes.position;
     const original = originalPositions.current;
@@ -122,13 +120,31 @@ export default function Bowl3D() {
         dy = 0,
         dz = 0;
 
-      // --- Scroll-based organic deformation ---
-      if (scroll > 0.005) {
-        const heightRatio = (oy + 0.3) / 1.8; // 0=bottom, 1=rim
-        const angle = Math.atan2(oz, ox);
-        const radius = Math.sqrt(ox * ox + oz * oz);
+      const heightRatio = (oy + 0.3) / 1.8; // 0=bottom, 1=rim
+      const angle = Math.atan2(oz, ox);
+      const radius = Math.sqrt(ox * ox + oz * oz);
 
-        // Phase 1 (0-0.3): Gentle waves + breathing
+      // --- Always-active idle sway (ゆらゆら) ---
+      // Gentle breathing — the bowl is alive
+      const idleWave =
+        Math.sin(heightRatio * Math.PI * 2 + time * 0.6 + angle) * 0.02 +
+        Math.cos(heightRatio * Math.PI + time * 0.4 - angle * 2) * 0.015;
+      const idleBreathe =
+        Math.sin(time * 0.5 + heightRatio * Math.PI) * 0.02;
+      // Slow wobble — asymmetric, organic
+      const idleWobble =
+        Math.sin(angle * 2 + time * 0.3) * Math.sin(heightRatio * Math.PI) * 0.015;
+
+      let idleRadius = radius + idleWave + idleBreathe + idleWobble;
+      let idleRadiusScale = radius > 0.001 ? idleRadius / radius : 1;
+
+      dx = ox * idleRadiusScale - ox;
+      dy = Math.sin(angle * 2 + time * 0.35) * 0.01;
+      dz = oz * idleRadiusScale - oz;
+
+      // --- Scroll-based additional deformation (layers on top of idle) ---
+      if (scroll > 0.005) {
+        // Waves — ripples intensify with scroll
         const wave1 =
           Math.sin(heightRatio * Math.PI * 3 + time * 0.8 + angle * 2) *
           scroll * 0.18;
@@ -138,41 +154,43 @@ export default function Bowl3D() {
         const breathe =
           Math.sin(time * 0.6 + heightRatio * Math.PI) * scroll * 0.14;
 
-        // Phase 2 (0.2+): Twist — gets stronger with scroll
+        // Twist — rotate vertices around Y axis
         const twistAmount = Math.pow(scroll, 0.8) * heightRatio * 0.8;
         const cosT = Math.cos(twistAmount);
         const sinT = Math.sin(twistAmount);
-        const twistedX = ox * cosT - oz * sinT;
-        const twistedZ = ox * sinT + oz * cosT;
+        const srcX = ox + dx;
+        const srcZ = oz + dz;
+        const twistedX = srcX * cosT - srcZ * sinT;
+        const twistedZ = srcX * sinT + srcZ * cosT;
 
-        // Phase 3 (0.3+): Pinch/bulge — dramatic mid-body deformation
+        // Pinch/bulge
         const bulge =
           Math.sin(scroll * Math.PI * 2.5) *
           Math.sin(heightRatio * Math.PI) * 0.25;
 
-        // Phase 4 (0.5+): Rim flare — top opens outward
+        // Rim flare
         const rimFlare = scroll > 0.4
           ? Math.pow(heightRatio, 3) * (scroll - 0.4) * 0.5
           : 0;
 
-        // Phase 5 (0.6+): Asymmetric wobble — organic, imperfect shape
+        // Asymmetric wobble
         const wobble = scroll > 0.3
           ? Math.sin(angle * 2 + time * 0.4) * Math.sin(heightRatio * Math.PI) *
             (scroll - 0.3) * 0.3
           : 0;
 
-        // Phase 6 (0.7+): Bottom pinch — vessel narrows at base
+        // Bottom pinch
         const bottomPinch = scroll > 0.5
           ? -Math.pow(1 - heightRatio, 3) * (scroll - 0.5) * 0.4
           : 0;
 
-        const newRadius = radius + wave1 + wave2 + breathe + bulge + rimFlare + wobble + bottomPinch;
-        const radiusScale = radius > 0.001 ? newRadius / radius : 1;
+        const scrollRadius = radius + wave1 + wave2 + breathe + bulge + rimFlare + wobble + bottomPinch;
+        const scrollScale = radius > 0.001 ? scrollRadius / radius : 1;
 
-        dx = twistedX * radiusScale - ox;
-        dy = Math.sin(angle * 3 + time * 0.7) * scroll * 0.08
+        dx = twistedX * scrollScale - ox;
+        dy += Math.sin(angle * 3 + time * 0.7) * scroll * 0.08
            + Math.sin(heightRatio * Math.PI * 2 + time * 0.4) * scroll * 0.05;
-        dz = twistedZ * radiusScale - oz;
+        dz = twistedZ * scrollScale - oz;
       }
 
       // --- Mouse/touch deformation ---
@@ -193,11 +211,11 @@ export default function Bowl3D() {
         }
       }
 
-      // Smooth spring interpolation — faster response for visible deformation
+      // Smooth spring interpolation
       const cx = positions.getX(i);
       const cy = positions.getY(i);
       const cz = positions.getZ(i);
-      const springSpeed = 0.08 + scroll * 0.04;
+      const springSpeed = 0.1 + scroll * 0.04;
       positions.setXYZ(
         i,
         cx + (ox + dx - cx) * springSpeed,
