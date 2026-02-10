@@ -15,10 +15,10 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
   return (
     <ColorProvider>
       <DyeOverlay />
-      {/* 3D Bowl — background element, blends into white and yields to text */}
+      {/* 3D Bowl — background element, visible but behind all content */}
       <div
         className="fixed inset-0 z-0 pointer-events-none"
-        style={{ mixBlendMode: "multiply", opacity: 0.5 }}
+        style={{ opacity: 0.8 }}
       >
         <div className="w-full h-full pointer-events-auto">
           <BowlCanvas />

@@ -241,15 +241,15 @@ export default function Bowl3D() {
       />
       <meshPhysicalMaterial
         color={bowlColor}
-        roughness={0.85}
+        roughness={0.75}
         metalness={0.0}
-        clearcoat={0.05}
-        clearcoatRoughness={0.95}
-        transmission={0.15}
+        clearcoat={0.1}
+        clearcoatRoughness={0.8}
+        transmission={0.05}
         thickness={0.8}
-        envMapIntensity={0.15}
+        envMapIntensity={0.25}
         transparent
-        opacity={0.9}
+        opacity={0.95}
         side={THREE.DoubleSide}
       />
     </mesh>
