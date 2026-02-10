@@ -91,11 +91,11 @@ export default function Bowl3D() {
     meshRef.current.rotation.z = Math.sin(time * 0.3) * scroll * 0.08;
 
     // Scale shifts organically with scroll
-    const base = 1.4;
+    const base = 1.2;
     meshRef.current.scale.set(
-      base + Math.sin(scroll * Math.PI) * 0.2,
-      base - Math.sin(scroll * Math.PI * 0.7) * 0.15,
-      base + Math.cos(scroll * Math.PI * 1.3) * 0.15
+      base + Math.sin(scroll * Math.PI) * 0.15,
+      base - Math.sin(scroll * Math.PI * 0.7) * 0.1,
+      base + Math.cos(scroll * Math.PI * 1.3) * 0.1
     );
 
     // === Vertex deformation ===
@@ -212,8 +212,8 @@ export default function Bowl3D() {
       ref={meshRef}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      scale={1.4}
-      position={[0, 0.1, 0]}
+      scale={1.2}
+      position={[0.3, 0.1, 0]}
     >
       <latheGeometry
         ref={geometryRefCallback}
