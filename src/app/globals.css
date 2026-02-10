@@ -127,8 +127,8 @@ a:hover {
 .content-wrapper section,
 .content-wrapper article,
 .content-wrapper form {
-  background: rgba(250, 250, 250, 0.75);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(250, 250, 250, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 

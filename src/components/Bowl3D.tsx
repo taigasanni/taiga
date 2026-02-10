@@ -94,13 +94,13 @@ export default function Bowl3D() {
       Math.sin(time * 0.3) * 0.05 + Math.cos(time * 0.5) * 0.03 + scroll * 0.1;
 
     // Scale — gentle breathing always + more dramatic with scroll
-    const base = 1.2;
-    const idleBreathe = Math.sin(time * 0.5) * 0.03;
+    const base = 0.9;
+    const idleBreathe = Math.sin(time * 0.5) * 0.02;
     const scalePhase = scroll * Math.PI * 2;
     meshRef.current.scale.set(
-      base + idleBreathe + Math.sin(scalePhase) * 0.2 + scroll * 0.1,
-      base - idleBreathe * 0.5 - Math.sin(scalePhase * 0.7) * 0.15,
-      base + idleBreathe * 0.7 + Math.cos(scalePhase * 1.3) * 0.15
+      base + idleBreathe + Math.sin(scalePhase) * 0.12 + scroll * 0.08,
+      base - idleBreathe * 0.5 - Math.sin(scalePhase * 0.7) * 0.1,
+      base + idleBreathe * 0.7 + Math.cos(scalePhase * 1.3) * 0.1
     );
 
     // === Vertex deformation (always active) ===
@@ -250,8 +250,8 @@ export default function Bowl3D() {
       ref={meshRef}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      scale={1.2}
-      position={[0.3, 0.1, 0]}
+      scale={0.9}
+      position={[0.5, 0.2, 0]}
     >
       <latheGeometry
         ref={geometryRefCallback}
@@ -259,15 +259,15 @@ export default function Bowl3D() {
       />
       <meshPhysicalMaterial
         color={bowlColor}
-        roughness={0.75}
+        roughness={0.8}
         metalness={0.0}
-        clearcoat={0.1}
-        clearcoatRoughness={0.8}
-        transmission={0.05}
-        thickness={0.8}
-        envMapIntensity={0.25}
+        clearcoat={0.05}
+        clearcoatRoughness={0.9}
+        transmission={0.2}
+        thickness={0.5}
+        envMapIntensity={0.15}
         transparent
-        opacity={0.95}
+        opacity={0.7}
         side={THREE.DoubleSide}
       />
     </mesh>

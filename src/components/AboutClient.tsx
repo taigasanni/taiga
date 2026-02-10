@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
 import { useColor } from "@/lib/ColorContext";
 import { hslToString } from "@/lib/colorUtils";
@@ -13,12 +14,12 @@ export default function AboutClient() {
       <section className="min-h-[70vh] flex items-center px-6 md:px-16 lg:px-24">
         <div className="max-w-[900px]">
           <ScrollReveal>
-            <p className="text-sm tracking-[0.3em] text-[#1a1a1a]/30 mb-8 uppercase">
+            <p className="text-sm tracking-[0.3em] text-[#1a1a1a]/50 mb-8 uppercase font-medium">
               About
             </p>
             <h1
               className="text-[#1a1a1a]"
-              style={{ fontSize: "clamp(2rem, 6vw, 4.5rem)", fontWeight: 200, lineHeight: 1.15 }}
+              style={{ fontSize: "clamp(2rem, 6vw, 4.5rem)", fontWeight: 300, lineHeight: 1.15 }}
             >
               白い器として、
               <br />
@@ -28,18 +29,19 @@ export default function AboutClient() {
         </div>
       </section>
 
-      {/* Philosophy — with image placeholder */}
+      {/* Philosophy — with image */}
       <section className="py-20 md:py-32">
         <div className="flex flex-col md:flex-row gap-12 md:gap-0">
-          {/* Image placeholder */}
+          {/* Image */}
           <div className="md:w-1/2 px-6 md:px-0 md:pl-16 lg:pl-24">
             <ScrollReveal>
-              <div className="relative aspect-[3/4] bg-[#1a1a1a]/[0.03] overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-[#1a1a1a]/15 text-sm tracking-wider">
-                    スタジオ写真
-                  </p>
-                </div>
+              <div className="relative aspect-[3/4] overflow-hidden">
+                <Image
+                  src="/image.jpg"
+                  alt="Hakki スタジオ"
+                  fill
+                  className="object-cover"
+                />
               </div>
             </ScrollReveal>
           </div>
@@ -48,18 +50,18 @@ export default function AboutClient() {
           <div className="md:w-1/2 flex items-center px-6 md:pl-16 lg:pl-24 md:pr-16 lg:pr-24">
             <div>
               <ScrollReveal>
-                <p className="text-[#1a1a1a]/60 leading-[2] text-lg" style={{ fontWeight: 300 }}>
+                <p className="text-[#1a1a1a]/80 leading-[2] text-lg" style={{ fontWeight: 400 }}>
                   Hakkiは「白」を意味します。
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={0.1}>
-                <p className="text-[#1a1a1a]/50 leading-[2] mt-8">
+                <p className="text-[#1a1a1a]/70 leading-[2] mt-8">
                   私たちは白い器のように、クライアントのプロジェクトの色に染まり、
                   共に新しい色を生み出すクリエイティブスタジオです。
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={0.15}>
-                <p className="text-[#1a1a1a]/50 leading-[2] mt-6">
+                <p className="text-[#1a1a1a]/70 leading-[2] mt-6">
                   一方的にデザインを押し付けるのではなく、
                   対話の中から最適な形を見つけ出す。
                   クライアントの想いに寄り添いながら、
@@ -82,7 +84,7 @@ export default function AboutClient() {
         />
         <div className="relative px-6 md:px-16 lg:px-24">
           <ScrollReveal>
-            <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/30 mb-20 uppercase">
+            <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-20 uppercase font-medium">
               Services
             </p>
           </ScrollReveal>
@@ -104,21 +106,22 @@ export default function AboutClient() {
             ].map((service, i) => (
               <ScrollReveal key={service.title} delay={i * 0.1}>
                 <div className="group">
-                  {/* Service image placeholder */}
-                  <div className="relative aspect-square bg-[#1a1a1a]/[0.02] mb-8 overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <p className="text-[#1a1a1a]/10 text-sm tracking-wider">
-                        {service.title} ビジュアル
-                      </p>
-                    </div>
+                  {/* Service image */}
+                  <div className="relative aspect-square overflow-hidden mb-8">
+                    <Image
+                      src="/image.jpg"
+                      alt={`${service.title} ビジュアル`}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                   <h3
                     className="text-[#1a1a1a] mb-4"
-                    style={{ fontSize: "clamp(1.25rem, 2vw, 1.75rem)", fontWeight: 300 }}
+                    style={{ fontSize: "clamp(1.25rem, 2vw, 1.75rem)", fontWeight: 400 }}
                   >
                     {service.title}
                   </h3>
-                  <p className="text-[#1a1a1a]/45 leading-[2]">
+                  <p className="text-[#1a1a1a]/65 leading-[2]">
                     {service.desc}
                   </p>
                 </div>
@@ -131,7 +134,7 @@ export default function AboutClient() {
       {/* Vision — large typography */}
       <section className="py-20 md:py-40 px-6 md:px-16 lg:px-24">
         <ScrollReveal>
-          <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/30 mb-12 uppercase">
+          <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-12 uppercase font-medium">
             Vision
           </p>
         </ScrollReveal>
@@ -139,7 +142,7 @@ export default function AboutClient() {
         <ScrollReveal>
           <h2
             className="text-[#1a1a1a] mb-12 max-w-[800px]"
-            style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)", fontWeight: 200 }}
+            style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)", fontWeight: 300 }}
           >
             すべてのプロジェクトに、
             <br />
@@ -148,7 +151,7 @@ export default function AboutClient() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <p className="text-[#1a1a1a]/50 leading-[2] max-w-[600px]">
+          <p className="text-[#1a1a1a]/70 leading-[2] max-w-[600px]">
             私たちは、クライアントの成功が自分たちの成功だと信じています。
             だからこそ、一つ一つのプロジェクトに真摯に向き合い、
             最善の結果を追求します。
@@ -162,7 +165,7 @@ export default function AboutClient() {
       {/* Company info */}
       <section className="py-20 md:py-32 px-6 md:px-16 lg:px-24">
         <ScrollReveal>
-          <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/30 mb-16 uppercase">
+          <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-16 uppercase font-medium">
             Company
           </p>
         </ScrollReveal>
@@ -176,12 +179,12 @@ export default function AboutClient() {
             ].map(([dt, dd]) => (
               <div
                 key={dt}
-                className="flex flex-col md:flex-row md:gap-16 py-5 border-b border-[#1a1a1a]/5"
+                className="flex flex-col md:flex-row md:gap-16 py-5 border-b border-[#1a1a1a]/10"
               >
-                <dt className="text-sm text-[#1a1a1a]/35 md:w-32 shrink-0 mb-1 md:mb-0">
+                <dt className="text-sm text-[#1a1a1a]/50 md:w-32 shrink-0 mb-1 md:mb-0">
                   {dt}
                 </dt>
-                <dd className="text-[#1a1a1a]/65">{dd}</dd>
+                <dd className="text-[#1a1a1a]/80">{dd}</dd>
               </div>
             ))}
           </dl>

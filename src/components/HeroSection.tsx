@@ -16,32 +16,32 @@ export default function HeroSection() {
         style={{ y: textY, opacity: textOpacity }}
       >
         <ScrollReveal>
-          <p className="text-sm tracking-[0.3em] text-[#1a1a1a]/30 mb-8 uppercase">
+          <p className="text-sm tracking-[0.3em] text-[#1a1a1a]/50 mb-8 uppercase font-medium">
             Design & Marketing Studio
           </p>
         </ScrollReveal>
 
         <ScrollReveal delay={0.15}>
-          <h1 className="text-[#1a1a1a] leading-[1.1]" style={{ fontSize: "clamp(2.5rem, 8vw, 6rem)", fontWeight: 200 }}>
+          <h1 className="text-[#1a1a1a] leading-[1.1]" style={{ fontSize: "clamp(2.5rem, 8vw, 6rem)", fontWeight: 300 }}>
             白い器
           </h1>
         </ScrollReveal>
 
         <ScrollReveal delay={0.3}>
           <p
-            className="text-[#1a1a1a]/40 mt-6 text-xl md:text-2xl"
-            style={{ fontWeight: 200, letterSpacing: "0.15em" }}
+            className="text-[#1a1a1a]/60 mt-6 text-xl md:text-2xl"
+            style={{ fontWeight: 300, letterSpacing: "0.15em" }}
           >
             染まる、染める
           </p>
         </ScrollReveal>
 
         <ScrollReveal delay={0.5}>
-          <p className="mt-20 text-[#1a1a1a]/25 text-xs tracking-[0.3em] uppercase">
+          <p className="mt-20 text-[#1a1a1a]/40 text-xs tracking-[0.3em] uppercase">
             Scroll to explore
           </p>
           <motion.div
-            className="mt-4 mx-auto w-[1px] h-12 bg-[#1a1a1a]/10"
+            className="mt-4 mx-auto w-[1px] h-12 bg-[#1a1a1a]/20"
             animate={{ scaleY: [0.3, 1, 0.3] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           />

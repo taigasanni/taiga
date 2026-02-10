@@ -32,6 +32,8 @@ export const journalEntries: JournalEntry[] = [
 
 完成したデザインが、クライアントの想いと私たちの技術が溶け合ったものであること。それが、Hakkiの目指すデザインです。`,
     themeColor: { h: 280, s: 30, l: 80 },
+    eyecatch: "/image.jpg",
+    eyecatchAlt: "デザインは対話である",
   },
   {
     slug: "brand-identity-invisible-force",
@@ -54,6 +56,8 @@ export const journalEntries: JournalEntry[] = [
 
 Hakkiは、その軸を一緒に見つけるところから始めます。`,
     themeColor: { h: 150, s: 25, l: 82 },
+    eyecatch: "/image.jpg",
+    eyecatchAlt: "ブランドアイデンティティという見えない力",
   },
   {
     slug: "whitespace-speaks",
@@ -78,5 +82,7 @@ Hakkiは、その軸を一緒に見つけるところから始めます。`,
 
 余白が語るもの——それは、自信と誠実さです。`,
     themeColor: { h: 200, s: 20, l: 88 },
+    eyecatch: "/image.jpg",
+    eyecatchAlt: "余白が語ること",
   },
 ];

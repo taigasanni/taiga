@@ -36,7 +36,7 @@ export default function JournalArticleClient({ entry }: Props) {
         <div className="max-w-[800px]">
           <Link
             href="/journal"
-            className="text-sm text-[#1a1a1a]/30 no-underline hover:text-[#1a1a1a]/60 transition-colors duration-300"
+            className="text-sm text-[#1a1a1a]/50 no-underline hover:text-[#1a1a1a]/80 transition-colors duration-300"
           >
             ← Journal
           </Link>
@@ -48,14 +48,14 @@ export default function JournalArticleClient({ entry }: Props) {
         <div className="max-w-[800px]">
           <ScrollReveal>
             <div className="flex items-center gap-4 mb-8">
-              <span className="text-xs text-[#1a1a1a]/30 tracking-wider">
+              <span className="text-xs text-[#1a1a1a]/45 tracking-wider font-medium">
                 {entry.category}
               </span>
-              <span className="text-xs text-[#1a1a1a]/20">{entry.date}</span>
+              <span className="text-xs text-[#1a1a1a]/30">{entry.date}</span>
             </div>
             <h1
               className="text-[#1a1a1a]"
-              style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)", fontWeight: 200 }}
+              style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)", fontWeight: 300 }}
             >
               {entry.title}
             </h1>
@@ -67,7 +67,7 @@ export default function JournalArticleClient({ entry }: Props) {
       <section className="py-10 px-6 md:px-16 lg:px-24">
         <div className="max-w-[900px]">
           <ScrollReveal>
-            <div className="relative aspect-[2/1] bg-[#1a1a1a]/[0.03] overflow-hidden">
+            <div className="relative aspect-[2/1] bg-[#1a1a1a]/[0.05] overflow-hidden">
               {entry.eyecatch ? (
                 <Image
                   src={entry.eyecatch}
@@ -78,7 +78,7 @@ export default function JournalArticleClient({ entry }: Props) {
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-[#1a1a1a]/10 text-sm tracking-wider">
+                  <p className="text-[#1a1a1a]/20 text-sm tracking-wider">
                     アイキャッチ画像
                   </p>
                 </div>
@@ -93,7 +93,7 @@ export default function JournalArticleClient({ entry }: Props) {
         <div className="max-w-[700px]">
           {paragraphs.map((paragraph, i) => (
             <ScrollReveal key={i} delay={i * 0.05}>
-              <p className="text-[#1a1a1a]/55 leading-[2.2] mb-8">
+              <p className="text-[#1a1a1a]/75 leading-[2.2] mb-8">
                 {paragraph}
               </p>
             </ScrollReveal>
@@ -107,7 +107,7 @@ export default function JournalArticleClient({ entry }: Props) {
           <ScrollReveal>
             <Link
               href="/journal"
-              className="text-sm text-[#1a1a1a]/35 tracking-wider no-underline hover:text-[#1a1a1a]/60 transition-colors duration-300"
+              className="text-sm text-[#1a1a1a]/50 tracking-wider no-underline hover:text-[#1a1a1a]/80 transition-colors duration-300"
             >
               ← すべての記事へ
             </Link>
