@@ -3,13 +3,13 @@ import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 
 export const metadata: Metadata = {
-  title: "Hakki — 白い器",
+  title: "白器 — いい商品を、ちゃんと売る。",
   description:
-    "白い器のように、あなたの色に染まる。株式会社Hakkiは、デザインとマーケティングで、クライアントと共に新しい色を生み出します。",
+    "株式会社白器は、いい商品を正しく届けるマーケティング会社です。伝え方と届け方を整え、売れるべきものがきちんと売れる状態をつくります。",
   openGraph: {
-    title: "Hakki — 白い器",
+    title: "白器 — いい商品を、ちゃんと売る。",
     description:
-      "白い器のように、あなたの色に染まる。デザインとマーケティングで、クライアントと共に新しい色を生み出します。",
+      "伝え方と届け方を整え、売れるべきものがきちんと売れる状態をつくるマーケティング会社です。",
     locale: "ja_JP",
     type: "website",
   },

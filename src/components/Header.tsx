@@ -21,7 +21,7 @@ export default function Header() {
           className="text-lg tracking-widest text-white no-underline"
           style={{ fontWeight: 300 }}
         >
-          Hakki
+          白器
         </Link>
 
         {/* Desktop nav */}

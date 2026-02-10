@@ -10,7 +10,7 @@ export default function AboutClient() {
 
   return (
     <div>
-      {/* Hero — full width bold */}
+      {/* Hero */}
       <section className="min-h-[70vh] flex items-center px-6 md:px-16 lg:px-24">
         <div className="max-w-[900px]">
           <ScrollReveal>
@@ -21,9 +21,9 @@ export default function AboutClient() {
               className="text-[#1a1a1a]"
               style={{ fontSize: "clamp(2rem, 6vw, 4.5rem)", fontWeight: 300, lineHeight: 1.15 }}
             >
-              白い器として、
+              いい商品を、
               <br />
-              共に色づく。
+              ちゃんと売る会社。
             </h1>
           </ScrollReveal>
         </div>
@@ -32,13 +32,12 @@ export default function AboutClient() {
       {/* Philosophy — with image */}
       <section className="py-20 md:py-32">
         <div className="flex flex-col md:flex-row gap-12 md:gap-0">
-          {/* Image */}
           <div className="md:w-1/2 px-6 md:px-0 md:pl-16 lg:pl-24">
             <ScrollReveal>
               <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
                   src="/image.jpg"
-                  alt="Hakki スタジオ"
+                  alt="白器チーム"
                   fill
                   className="object-cover"
                 />
@@ -46,27 +45,24 @@ export default function AboutClient() {
             </ScrollReveal>
           </div>
 
-          {/* Text */}
           <div className="md:w-1/2 flex items-center px-6 md:pl-16 lg:pl-24 md:pr-16 lg:pr-24">
             <div>
               <ScrollReveal>
                 <p className="text-[#1a1a1a]/80 leading-[2] text-lg" style={{ fontWeight: 400 }}>
-                  Hakkiは「白」を意味します。
+                  白器（はっき）は「白い器」を意味します。
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={0.1}>
                 <p className="text-[#1a1a1a]/70 leading-[2] mt-8">
-                  私たちは白い器のように、クライアントのプロジェクトの色に染まり、
-                  共に新しい色を生み出すクリエイティブスタジオです。
+                  私たちは白い器のように、クライアントの商品やサービスの本質を受け止め、
+                  その価値を正しく届けるマーケティング会社です。
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={0.15}>
                 <p className="text-[#1a1a1a]/70 leading-[2] mt-6">
-                  一方的にデザインを押し付けるのではなく、
-                  対話の中から最適な形を見つけ出す。
-                  クライアントの想いに寄り添いながら、
-                  デザインとマーケティングの力で、
-                  その想いを世界に届けます。
+                  無理に売り込むのではなく、
+                  伝え方と届け方を整える。
+                  それだけで、いい商品はちゃんと売れると信じています。
                 </p>
               </ScrollReveal>
             </div>
@@ -74,7 +70,7 @@ export default function AboutClient() {
         </div>
       </section>
 
-      {/* Services detail — bold cards */}
+      {/* What we value */}
       <section className="py-20 md:py-40 relative">
         <div
           className="absolute inset-0 pointer-events-none transition-all duration-[3000ms]"
@@ -85,32 +81,31 @@ export default function AboutClient() {
         <div className="relative px-6 md:px-16 lg:px-24">
           <ScrollReveal>
             <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-20 uppercase font-medium">
-              Services
+              Our Values
             </p>
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
             {[
               {
-                title: "Design",
-                desc: "ウェブサイトデザイン、ブランドアイデンティティ、グラフィックデザイン。美しさと機能性を両立させます。",
+                title: "本質を見る",
+                desc: "商品やサービスの核にある価値を見つけ出し、言語化します。表面的な訴求ではなく、本当の強みで勝負する。",
               },
               {
-                title: "Marketing",
-                desc: "デジタルマーケティング戦略、コンテンツ企画、SNS運用。データとクリエイティブの融合。",
+                title: "正しく届ける",
+                desc: "誰に、どこで、どう伝えるか。戦略的にチャネルとメッセージを設計し、確実に届く形をつくります。",
               },
               {
-                title: "Branding",
-                desc: "ブランド戦略の策定から、ビジュアルアイデンティティの構築まで。一貫した世界観を。",
+                title: "長く続ける",
+                desc: "一時的な数字ではなく、持続的に売れる仕組みを構築。クライアントのビジネスと共に成長します。",
               },
-            ].map((service, i) => (
-              <ScrollReveal key={service.title} delay={i * 0.1}>
+            ].map((item, i) => (
+              <ScrollReveal key={item.title} delay={i * 0.1}>
                 <div className="group">
-                  {/* Service image */}
-                  <div className="relative aspect-square overflow-hidden mb-8">
+                  <div className="relative aspect-[4/3] overflow-hidden mb-8">
                     <Image
                       src="/image.jpg"
-                      alt={`${service.title} ビジュアル`}
+                      alt={item.title}
                       fill
                       className="object-cover"
                     />
@@ -119,10 +114,10 @@ export default function AboutClient() {
                     className="text-[#1a1a1a] mb-4"
                     style={{ fontSize: "clamp(1.25rem, 2vw, 1.75rem)", fontWeight: 400 }}
                   >
-                    {service.title}
+                    {item.title}
                   </h3>
                   <p className="text-[#1a1a1a]/65 leading-[2]">
-                    {service.desc}
+                    {item.desc}
                   </p>
                 </div>
               </ScrollReveal>
@@ -131,7 +126,7 @@ export default function AboutClient() {
         </div>
       </section>
 
-      {/* Vision — large typography */}
+      {/* Vision */}
       <section className="py-20 md:py-40 px-6 md:px-16 lg:px-24">
         <ScrollReveal>
           <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-12 uppercase font-medium">
@@ -144,20 +139,17 @@ export default function AboutClient() {
             className="text-[#1a1a1a] mb-12 max-w-[800px]"
             style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)", fontWeight: 300 }}
           >
-            すべてのプロジェクトに、
+            売ることは、誇っていい。
             <br />
-            新しい色を。
+            いい商品なら、なおさらです。
           </h2>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
           <p className="text-[#1a1a1a]/70 leading-[2] max-w-[600px]">
             私たちは、クライアントの成功が自分たちの成功だと信じています。
-            だからこそ、一つ一つのプロジェクトに真摯に向き合い、
-            最善の結果を追求します。
-            白い器は、注がれるものによって輝きを増す。
-            あなたのプロジェクトと共に、
-            私たちも成長し続けます。
+            だからこそ、一つ一つの商品に真摯に向き合い、
+            最善の「売れる形」を追求します。
           </p>
         </ScrollReveal>
       </section>
@@ -173,9 +165,9 @@ export default function AboutClient() {
         <ScrollReveal>
           <dl className="max-w-[600px] space-y-6">
             {[
-              ["社名", "株式会社Hakki"],
+              ["社名", "株式会社白器"],
               ["所在地", "東京都"],
-              ["事業内容", "デザイン / マーケティング / ブランディング"],
+              ["事業内容", "マーケティング支援 / ブランド戦略 / コンテンツ企画"],
             ].map(([dt, dd]) => (
               <div
                 key={dt}

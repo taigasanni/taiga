@@ -24,12 +24,10 @@ export default function Footer() {
               className="text-lg tracking-widest mb-4"
               style={{ fontWeight: 300 }}
             >
-              Hakki
+              白器
             </p>
             <p className="text-sm text-[#1a1a1a]/50 leading-relaxed">
-              白い器のように、
-              <br />
-              あなたの色に染まる。
+              いい商品を、ちゃんと売る。
             </p>
           </div>
 
@@ -59,7 +57,7 @@ export default function Footer() {
 
         <div className="mt-16 pt-6 border-t border-[#1a1a1a]/5">
           <p className="text-xs text-[#1a1a1a]/30">
-            &copy; {new Date().getFullYear()} Hakki Inc. All rights reserved.
+            &copy; {new Date().getFullYear()} 株式会社白器 All rights reserved.
           </p>
         </div>
       </div>

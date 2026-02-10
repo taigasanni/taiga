@@ -18,26 +18,45 @@ export default function BottomMessage() {
         }}
       />
 
-      <div className="relative max-w-[900px] mx-auto text-center">
+      <div className="relative max-w-[700px] mx-auto text-center">
         <ScrollReveal>
           <p
-            className="text-[#1a1a1a]/30 mb-10"
+            className="text-[#1a1a1a]/50 mb-6"
             style={{
-              fontSize: "clamp(1.2rem, 3vw, 2rem)",
-              fontWeight: 200,
-              letterSpacing: "0.1em",
+              fontSize: "clamp(1rem, 2vw, 1.3rem)",
+              fontWeight: 300,
+              lineHeight: 2,
             }}
           >
-            あなたと共に色づきました
+            売ることは、誇っていい。
+            <br />
+            いい商品なら、なおさらです。
           </p>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.2}>
+        <ScrollReveal delay={0.15}>
+          <p
+            className="text-[#1a1a1a] mb-16"
+            style={{
+              fontSize: "clamp(1.4rem, 3.5vw, 2.2rem)",
+              fontWeight: 300,
+              lineHeight: 1.4,
+            }}
+          >
+            いい商品を、ちゃんと売る。
+            <br />
+            <span className="text-[#1a1a1a]/60" style={{ fontSize: "0.7em" }}>
+              それが、株式会社白器のマーケティングです。
+            </span>
+          </p>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.3}>
           <Link
             href="/contact"
-            className="inline-block text-sm tracking-[0.25em] text-[#1a1a1a]/50 no-underline border-b border-[#1a1a1a]/10 pb-2 hover:text-[#1a1a1a] hover:border-[#1a1a1a]/25 transition-all duration-500 uppercase"
+            className="inline-block text-sm tracking-[0.25em] text-[#1a1a1a]/60 no-underline border-b border-[#1a1a1a]/15 pb-2 hover:text-[#1a1a1a] hover:border-[#1a1a1a]/30 transition-all duration-500 uppercase"
           >
-            Get in Touch
+            お問い合わせ
           </Link>
         </ScrollReveal>
       </div>

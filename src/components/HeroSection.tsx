@@ -10,29 +10,32 @@ export default function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Hero text — bold, large, centered over the bowl */}
       <motion.div
         className="relative z-10 text-center px-6 w-full max-w-[1000px] mx-auto"
         style={{ y: textY, opacity: textOpacity }}
       >
         <ScrollReveal>
-          <p className="text-sm tracking-[0.3em] text-[#1a1a1a]/50 mb-8 uppercase font-medium">
-            Design & Marketing Studio
+          <p className="text-sm tracking-[0.3em] text-[#1a1a1a]/50 mb-10 uppercase font-medium">
+            Marketing Company
           </p>
         </ScrollReveal>
 
         <ScrollReveal delay={0.15}>
-          <h1 className="text-[#1a1a1a] leading-[1.1]" style={{ fontSize: "clamp(2.5rem, 8vw, 6rem)", fontWeight: 300 }}>
-            白い器
+          <h1 className="text-[#1a1a1a] leading-[1.15]" style={{ fontSize: "clamp(2.2rem, 7vw, 5rem)", fontWeight: 300 }}>
+            いい商品を、
+            <br />
+            ちゃんと売る。
           </h1>
         </ScrollReveal>
 
         <ScrollReveal delay={0.3}>
           <p
-            className="text-[#1a1a1a]/60 mt-6 text-xl md:text-2xl"
-            style={{ fontWeight: 300, letterSpacing: "0.15em" }}
+            className="text-[#1a1a1a]/50 mt-8 text-lg md:text-xl leading-relaxed max-w-[500px] mx-auto"
+            style={{ fontWeight: 300 }}
           >
-            染まる、染める
+            売れない理由は、品質じゃない。
+            <br />
+            伝え方と、届け方。
           </p>
         </ScrollReveal>
 
