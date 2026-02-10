@@ -94,7 +94,7 @@ export default function Bowl3D() {
       Math.sin(time * 0.3) * 0.05 + Math.cos(time * 0.5) * 0.03 + scroll * 0.1;
 
     // Scale — gentle breathing always + more dramatic with scroll
-    const base = 0.9;
+    const base = 1.1;
     const idleBreathe = Math.sin(time * 0.5) * 0.02;
     const scalePhase = scroll * Math.PI * 2;
     meshRef.current.scale.set(
@@ -250,8 +250,8 @@ export default function Bowl3D() {
       ref={meshRef}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      scale={0.9}
-      position={[0.5, 0.2, 0]}
+      scale={1.1}
+      position={[0.3, 0.1, 0]}
     >
       <latheGeometry
         ref={geometryRefCallback}

@@ -9,7 +9,7 @@ export default function BowlCanvas() {
   return (
     <div className="w-full h-full">
       <Canvas
-        camera={{ position: [1.5, 1.0, 8], fov: 28 }}
+        camera={{ position: [1.2, 1.0, 6.5], fov: 30 }}
         gl={{
           antialias: true,
           alpha: true,
