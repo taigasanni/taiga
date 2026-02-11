@@ -75,6 +75,7 @@ export default function CustomCursor() {
       style={{
         willChange: "transform",
         boxSizing: "border-box",
+        borderStyle: "solid",
       }}
       animate={{
         width: isHovering ? 48 : 28,

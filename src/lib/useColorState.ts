@@ -35,14 +35,20 @@ function saveDyeState(state: DyeState) {
   }
 }
 
-export function useColorState() {
-  const [dyeState, setDyeState] = useState<DyeState>(() => loadDyeState());
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [currentColor, setCurrentColor] = useState<HSLColor>(
-    getTimeBasedColor()
-  );
+// Stable default that matches on both server and client (avoids hydration mismatch)
+const DEFAULT_DYE: DyeState = {
+  progress: 0,
+  lastColor: { h: 0, s: 0, l: 100 },
+  visitCount: 0,
+};
+const DEFAULT_COLOR: HSLColor = { h: 200, s: 30, l: 85 };
 
-  // Update visit count on mount
+export function useColorState() {
+  const [dyeState, setDyeState] = useState<DyeState>(DEFAULT_DYE);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [currentColor, setCurrentColor] = useState<HSLColor>(DEFAULT_COLOR);
+
+  // Load stored state + update visit count on mount (client only)
   useEffect(() => {
     const saved = loadDyeState();
     const newState = {
@@ -51,6 +57,7 @@ export function useColorState() {
     };
     setDyeState(newState);
     saveDyeState(newState);
+    setCurrentColor(getTimeBasedColor());
   }, []);
 
   // Handle scroll progress
