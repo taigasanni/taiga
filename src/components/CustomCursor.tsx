@@ -1,49 +1,82 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useCallback } from "react";
 
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
-  const [isHovering, setIsHovering] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [onDark, setOnDark] = useState(false);
-  const pos = useRef({ x: 0, y: 0 });
-  const target = useRef({ x: 0, y: 0 });
+  const pos = useRef({ x: -100, y: -100 });
+  const target = useRef({ x: -100, y: -100 });
   const raf = useRef<number>(0);
+  const hovering = useRef(false);
+  const onDark = useRef(false);
+
+  const updateStyle = useCallback(() => {
+    const el = cursorRef.current;
+    if (!el) return;
+
+    const h = hovering.current;
+    const dark = onDark.current;
+
+    el.style.width = h ? "48px" : "28px";
+    el.style.height = h ? "48px" : "28px";
+    el.style.borderWidth = h ? "2px" : "1.5px";
+    el.style.borderColor = h
+      ? "rgba(200, 60, 50, 0.7)"
+      : dark
+        ? "rgba(255, 255, 255, 0.45)"
+        : "rgba(0, 0, 0, 0.35)";
+    el.style.backgroundColor = h ? "rgba(200, 60, 50, 0.08)" : "transparent";
+  }, []);
 
   useEffect(() => {
     const isTouchDevice =
       "ontouchstart" in window || navigator.maxTouchPoints > 0;
     if (isTouchDevice) return;
 
+    const el = cursorRef.current;
+    if (!el) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       target.current = { x: e.clientX, y: e.clientY };
-      if (!isVisible) setIsVisible(true);
+      if (el.style.opacity !== "1") {
+        el.style.opacity = "1";
+      }
     };
 
-    const handleMouseEnter = () => setIsVisible(true);
-    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => {
+      el.style.opacity = "1";
+    };
+
+    const handleMouseLeave = () => {
+      el.style.opacity = "0";
+    };
 
     const handleElementHover = (e: MouseEvent) => {
-      const el = e.target as HTMLElement;
-      const clickable = el.closest(
+      const t = e.target as HTMLElement;
+
+      const clickable = t.closest(
         "a, button, [role='button'], input, textarea, select, [onclick]"
       );
-      setIsHovering(!!clickable);
+      const wasHovering = hovering.current;
+      hovering.current = !!clickable;
 
-      const darkPage = el.closest(".dark-page");
-      setOnDark(!!darkPage);
+      const wasDark = onDark.current;
+      onDark.current = !!t.closest(".dark-page");
+
+      if (hovering.current !== wasHovering || onDark.current !== wasDark) {
+        updateStyle();
+      }
     };
 
     const animate = () => {
       pos.current.x += (target.current.x - pos.current.x) * 0.15;
       pos.current.y += (target.current.y - pos.current.y) * 0.15;
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate(${pos.current.x}px, ${pos.current.y}px) translate(-50%, -50%)`;
-      }
+      el.style.transform = `translate(${pos.current.x}px, ${pos.current.y}px) translate(-50%, -50%)`;
       raf.current = requestAnimationFrame(animate);
     };
+
+    // Apply initial style
+    updateStyle();
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseover", handleElementHover);
@@ -58,40 +91,29 @@ export default function CustomCursor() {
       document.removeEventListener("mouseleave", handleMouseLeave);
       cancelAnimationFrame(raf.current);
     };
-  }, [isVisible]);
-
-  if (typeof window === "undefined") return null;
-
-  const borderColor = onDark
-    ? "rgba(255, 255, 255, 0.45)"
-    : "rgba(0, 0, 0, 0.35)";
-
-  const hoverBorder = "rgba(200, 60, 50, 0.7)";
+  }, [updateStyle]);
 
   return (
-    <motion.div
+    <div
       ref={cursorRef}
-      className="fixed top-0 left-0 z-[9999] pointer-events-none rounded-full"
       style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 99999,
+        pointerEvents: "none",
+        borderRadius: "50%",
+        borderStyle: "solid",
+        borderWidth: "1.5px",
+        borderColor: "rgba(0, 0, 0, 0.35)",
+        backgroundColor: "transparent",
+        width: "28px",
+        height: "28px",
+        opacity: 0,
         willChange: "transform",
         boxSizing: "border-box",
-        borderStyle: "solid",
-      }}
-      animate={{
-        width: isHovering ? 48 : 28,
-        height: isHovering ? 48 : 28,
-        opacity: isVisible ? 1 : 0,
-        borderColor: isHovering ? hoverBorder : borderColor,
-        borderWidth: isHovering ? 2 : 1.5,
-        backgroundColor: isHovering ? "rgba(200, 60, 50, 0.08)" : "transparent",
-      }}
-      transition={{
-        width: { duration: 0.25, ease: "easeOut" },
-        height: { duration: 0.25, ease: "easeOut" },
-        borderColor: { duration: 0.3 },
-        borderWidth: { duration: 0.25 },
-        backgroundColor: { duration: 0.3 },
-        opacity: { duration: 0.2 },
+        transition:
+          "width 0.25s ease-out, height 0.25s ease-out, border-color 0.3s, border-width 0.25s, background-color 0.3s, opacity 0.2s",
       }}
     />
   );
