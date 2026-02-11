@@ -13,7 +13,8 @@ export default function CustomCursor() {
 
   useEffect(() => {
     // Hide on touch devices
-    const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
     if (isTouchDevice) return;
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -27,7 +28,9 @@ export default function CustomCursor() {
     // Detect clickable elements
     const handleElementHover = (e: MouseEvent) => {
       const el = e.target as HTMLElement;
-      const clickable = el.closest("a, button, [role='button'], input, textarea, select, [onclick]");
+      const clickable = el.closest(
+        "a, button, [role='button'], input, textarea, select, [onclick]"
+      );
       setIsHovering(!!clickable);
     };
 
@@ -62,7 +65,7 @@ export default function CustomCursor() {
   return (
     <motion.div
       ref={cursorRef}
-      className="fixed top-0 left-0 z-[9999] pointer-events-none"
+      className="fixed top-0 left-0 z-[9999] pointer-events-none rounded-full"
       style={{ willChange: "transform" }}
       animate={{
         width: isHovering ? 48 : 20,
@@ -76,8 +79,6 @@ export default function CustomCursor() {
         backgroundColor: { duration: 0.25 },
         opacity: { duration: 0.2 },
       }}
-    >
-      <div className="w-full h-full rounded-full" style={{ backgroundColor: "inherit" }} />
-    </motion.div>
+    />
   );
 }

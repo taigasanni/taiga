@@ -138,3 +138,21 @@ a:hover {
   -webkit-backdrop-filter: blur(12px);
 }
 
+/* CMS pages: restore normal cursor */
+[style*="cursor: auto"],
+[style*="cursor: auto"] * {
+  cursor: auto !important;
+}
+[style*="cursor: auto"] a,
+[style*="cursor: auto"] button,
+[style*="cursor: auto"] input,
+[style*="cursor: auto"] textarea,
+[style*="cursor: auto"] select {
+  cursor: pointer !important;
+}
+[style*="cursor: auto"] input[type="text"],
+[style*="cursor: auto"] input[type="email"],
+[style*="cursor: auto"] textarea {
+  cursor: text !important;
+}
+
