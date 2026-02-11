@@ -7,12 +7,12 @@ export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [onDark, setOnDark] = useState(false);
   const pos = useRef({ x: 0, y: 0 });
   const target = useRef({ x: 0, y: 0 });
   const raf = useRef<number>(0);
 
   useEffect(() => {
-    // Hide on touch devices
     const isTouchDevice =
       "ontouchstart" in window || navigator.maxTouchPoints > 0;
     if (isTouchDevice) return;
@@ -25,16 +25,18 @@ export default function CustomCursor() {
     const handleMouseEnter = () => setIsVisible(true);
     const handleMouseLeave = () => setIsVisible(false);
 
-    // Detect clickable elements
     const handleElementHover = (e: MouseEvent) => {
       const el = e.target as HTMLElement;
       const clickable = el.closest(
         "a, button, [role='button'], input, textarea, select, [onclick]"
       );
       setIsHovering(!!clickable);
+
+      // Detect dark page background
+      const darkPage = el.closest(".dark-page");
+      setOnDark(!!darkPage);
     };
 
-    // Smooth animation loop
     const animate = () => {
       pos.current.x += (target.current.x - pos.current.x) * 0.15;
       pos.current.y += (target.current.y - pos.current.y) * 0.15;
@@ -59,8 +61,12 @@ export default function CustomCursor() {
     };
   }, [isVisible]);
 
-  // Don't render on SSR
   if (typeof window === "undefined") return null;
+
+  // Dark bg → light cursor, Light bg → dark cursor
+  const defaultColor = onDark
+    ? "rgba(200, 200, 200, 0.6)"
+    : "rgba(80, 80, 80, 0.5)";
 
   return (
     <motion.div
@@ -71,12 +77,12 @@ export default function CustomCursor() {
         width: isHovering ? 48 : 20,
         height: isHovering ? 48 : 20,
         opacity: isVisible ? 1 : 0,
-        backgroundColor: isHovering ? "rgba(200, 60, 50, 0.7)" : "#D3D2D7",
+        backgroundColor: isHovering ? "rgba(200, 60, 50, 0.7)" : defaultColor,
       }}
       transition={{
         width: { duration: 0.25, ease: "easeOut" },
         height: { duration: 0.25, ease: "easeOut" },
-        backgroundColor: { duration: 0.25 },
+        backgroundColor: { duration: 0.3 },
         opacity: { duration: 0.2 },
       }}
     />
