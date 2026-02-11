@@ -22,12 +22,12 @@ export default function JournalArticleClient({ entry }: Props) {
   const paragraphs = entry.content.split("\n\n").filter(Boolean);
 
   return (
-    <div>
+    <div className="dark-page">
       {/* Article dye overlay */}
       <div
         className="fixed inset-0 pointer-events-none z-0 transition-all duration-[3000ms]"
         style={{
-          background: `radial-gradient(ellipse at 50% 30%, ${hslToString(entry.themeColor, combinedProgress * 0.08)} 0%, transparent 60%)`,
+          background: `radial-gradient(ellipse at 50% 30%, ${hslToString(entry.themeColor, combinedProgress * 0.06)} 0%, transparent 60%)`,
         }}
       />
 
@@ -36,7 +36,7 @@ export default function JournalArticleClient({ entry }: Props) {
         <div className="max-w-[800px] mx-auto">
           <Link
             href="/journal"
-            className="text-sm text-[#1a1a1a]/50 no-underline hover:text-[#1a1a1a]/80 transition-colors duration-300"
+            className="text-sm text-white/50 no-underline hover:text-white/80 transition-colors duration-300"
           >
             ← Journal
           </Link>
@@ -48,13 +48,13 @@ export default function JournalArticleClient({ entry }: Props) {
         <div className="max-w-[800px] mx-auto">
           <ScrollReveal>
             <div className="flex items-center gap-4 mb-8">
-              <span className="text-xs text-[#1a1a1a]/45 tracking-wider font-medium">
+              <span className="text-xs text-white/45 tracking-wider font-medium">
                 {entry.category}
               </span>
-              <span className="text-xs text-[#1a1a1a]/30">{entry.date}</span>
+              <span className="text-xs text-white/30">{entry.date}</span>
             </div>
             <h1
-              className="text-[#1a1a1a]"
+              className="text-white"
               style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)", fontWeight: 300 }}
             >
               {entry.title}
@@ -67,7 +67,7 @@ export default function JournalArticleClient({ entry }: Props) {
       <section className="py-10 px-6 md:px-16 lg:px-24">
         <div className="max-w-[900px] mx-auto">
           <ScrollReveal>
-            <div className="relative aspect-[2/1] bg-[#1a1a1a]/[0.05] overflow-hidden">
+            <div className="relative aspect-[2/1] bg-white/[0.05] overflow-hidden">
               {entry.eyecatch ? (
                 <Image
                   src={entry.eyecatch}
@@ -78,7 +78,7 @@ export default function JournalArticleClient({ entry }: Props) {
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-[#1a1a1a]/20 text-sm tracking-wider">
+                  <p className="text-white/20 text-sm tracking-wider">
                     アイキャッチ画像
                   </p>
                 </div>
@@ -92,7 +92,6 @@ export default function JournalArticleClient({ entry }: Props) {
       <section className="pb-32 px-6 md:px-16 lg:px-24">
         <div className="max-w-[700px] mx-auto">
           {paragraphs.map((paragraph, i) => {
-            // Check for HTML heading tags
             const h2Match = paragraph.match(/^<h2>(.*?)<\/h2>$/);
             const h3Match = paragraph.match(/^<h3>(.*?)<\/h3>$/);
             const h4Match = paragraph.match(/^<h4>(.*?)<\/h4>$/);
@@ -101,7 +100,7 @@ export default function JournalArticleClient({ entry }: Props) {
               return (
                 <ScrollReveal key={i} delay={i * 0.05}>
                   <h2
-                    className="text-[#1a1a1a] mt-16 mb-6"
+                    className="text-white mt-16 mb-6"
                     style={{ fontSize: "clamp(1.3rem, 3vw, 1.8rem)", fontWeight: 300, lineHeight: 1.6 }}
                   >
                     {h2Match[1]}
@@ -114,7 +113,7 @@ export default function JournalArticleClient({ entry }: Props) {
               return (
                 <ScrollReveal key={i} delay={i * 0.05}>
                   <h3
-                    className="text-[#1a1a1a]/90 mt-12 mb-4"
+                    className="text-white/85 mt-12 mb-4"
                     style={{ fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)", fontWeight: 400, lineHeight: 1.6 }}
                   >
                     {h3Match[1]}
@@ -127,7 +126,7 @@ export default function JournalArticleClient({ entry }: Props) {
               return (
                 <ScrollReveal key={i} delay={i * 0.05}>
                   <h4
-                    className="text-[#1a1a1a]/85 mt-8 mb-3"
+                    className="text-white/80 mt-8 mb-3"
                     style={{ fontSize: "clamp(1rem, 2vw, 1.15rem)", fontWeight: 500, lineHeight: 1.6 }}
                   >
                     {h4Match[1]}
@@ -138,7 +137,7 @@ export default function JournalArticleClient({ entry }: Props) {
 
             return (
               <ScrollReveal key={i} delay={i * 0.05}>
-                <p className="text-[#1a1a1a]/75 leading-[2.2] mb-8">
+                <p className="text-white/65 leading-[2.2] mb-8">
                   {paragraph}
                 </p>
               </ScrollReveal>
@@ -153,7 +152,7 @@ export default function JournalArticleClient({ entry }: Props) {
           <ScrollReveal>
             <Link
               href="/journal"
-              className="text-sm text-[#1a1a1a]/50 tracking-wider no-underline hover:text-[#1a1a1a]/80 transition-colors duration-300"
+              className="text-sm text-white/50 tracking-wider no-underline hover:text-white/80 transition-colors duration-300"
             >
               ← すべての記事へ
             </Link>

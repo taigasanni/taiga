@@ -10,16 +10,16 @@ export default function AboutClient() {
   const { currentColor, combinedProgress } = useColor();
 
   return (
-    <div>
+    <div className="dark-page">
       {/* Hero */}
       <section className="min-h-[70vh] flex items-center px-6 md:px-16 lg:px-24">
         <div className="max-w-[900px] mx-auto">
           <ScrollReveal>
-            <p className="text-sm tracking-[0.3em] text-[#1a1a1a]/50 mb-8 uppercase font-medium">
+            <p className="text-sm tracking-[0.3em] text-white/50 mb-8 uppercase font-medium">
               About
             </p>
             <h1
-              className="text-[#1a1a1a]"
+              className="text-white"
               style={{ fontSize: "clamp(2rem, 6vw, 4.5rem)", fontWeight: 300, lineHeight: 1.15 }}
             >
               いい商品を、
@@ -61,18 +61,18 @@ export default function AboutClient() {
           <div className="md:w-1/2 flex items-center px-6 md:pl-16 lg:pl-24 md:pr-16 lg:pr-24">
             <div>
               <ScrollReveal>
-                <p className="text-[#1a1a1a]/80 leading-[2] text-lg" style={{ fontWeight: 400 }}>
+                <p className="text-white/80 leading-[2] text-lg" style={{ fontWeight: 400 }}>
                   白器（はっき）は「白い器」を意味します。
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={0.1}>
-                <p className="text-[#1a1a1a]/70 leading-[2] mt-8">
+                <p className="text-white/60 leading-[2] mt-8">
                   私たちは白い器のように、クライアントの商品やサービスの本質を受け止め、
                   その価値を正しく届けるマーケティング会社です。
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={0.15}>
-                <p className="text-[#1a1a1a]/70 leading-[2] mt-6">
+                <p className="text-white/60 leading-[2] mt-6">
                   無理に売り込むのではなく、
                   伝え方と届け方を整える。
                   それだけで、いい商品はちゃんと売れると信じています。
@@ -88,12 +88,12 @@ export default function AboutClient() {
         <div
           className="absolute inset-0 pointer-events-none transition-all duration-[3000ms]"
           style={{
-            background: `linear-gradient(180deg, transparent 0%, ${hslToString(currentColor, combinedProgress * 0.08)} 50%, transparent 100%)`,
+            background: `linear-gradient(180deg, transparent 0%, ${hslToString(currentColor, combinedProgress * 0.06)} 50%, transparent 100%)`,
           }}
         />
         <div className="relative px-6 md:px-16 lg:px-24">
           <ScrollReveal>
-            <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-20 uppercase font-medium">
+            <p className="text-sm tracking-[0.2em] text-white/50 mb-20 uppercase font-medium">
               Our Values
             </p>
           </ScrollReveal>
@@ -124,7 +124,6 @@ export default function AboutClient() {
                 transition={{ duration: 0.8, delay: i * 0.15, ease: [0.25, 0.1, 0, 1] }}
                 className="group"
               >
-                {/* Image with hover zoom + parallax */}
                 <div className="relative aspect-[4/3] overflow-hidden mb-8">
                   <motion.div
                     className="absolute inset-0"
@@ -138,7 +137,6 @@ export default function AboutClient() {
                       className="object-cover transition-transform duration-700 group-hover:scale-[1.08]"
                     />
                   </motion.div>
-                  {/* Number overlay */}
                   <motion.div
                     className="absolute top-4 left-4"
                     initial={{ opacity: 0, x: -10 }}
@@ -151,9 +149,8 @@ export default function AboutClient() {
                     </span>
                   </motion.div>
                 </div>
-                {/* Title with stagger */}
                 <motion.h3
-                  className="text-[#1a1a1a] mb-4"
+                  className="text-white mb-4"
                   style={{ fontSize: "clamp(1.25rem, 2vw, 1.75rem)", fontWeight: 400 }}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -162,9 +159,8 @@ export default function AboutClient() {
                 >
                   {item.title}
                 </motion.h3>
-                {/* Description fade in */}
                 <motion.p
-                  className="text-[#1a1a1a]/65 leading-[2]"
+                  className="text-white/55 leading-[2]"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
@@ -172,9 +168,8 @@ export default function AboutClient() {
                 >
                   {item.desc}
                 </motion.p>
-                {/* Animated underline on hover */}
                 <motion.div
-                  className="h-[1px] bg-[#1a1a1a]/10 mt-6 origin-left"
+                  className="h-[1px] bg-white/10 mt-6 origin-left"
                   initial={{ scaleX: 0 }}
                   whileInView={{ scaleX: 1 }}
                   viewport={{ once: true }}
@@ -190,14 +185,14 @@ export default function AboutClient() {
       <section className="py-20 md:py-40 px-6 md:px-16 lg:px-24">
         <div className="max-w-[800px] mx-auto">
           <ScrollReveal>
-            <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-12 uppercase font-medium">
+            <p className="text-sm tracking-[0.2em] text-white/50 mb-12 uppercase font-medium">
               Vision
             </p>
           </ScrollReveal>
 
           <ScrollReveal>
             <h2
-              className="text-[#1a1a1a] mb-12"
+              className="text-white mb-12"
               style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)", fontWeight: 300 }}
             >
               売ることは、誇っていい。
@@ -207,7 +202,7 @@ export default function AboutClient() {
           </ScrollReveal>
 
           <ScrollReveal delay={0.1}>
-            <p className="text-[#1a1a1a]/70 leading-[2] max-w-[600px]">
+            <p className="text-white/60 leading-[2] max-w-[600px]">
               私たちは、クライアントの成功が自分たちの成功だと信じています。
               だからこそ、一つ一つの商品に真摯に向き合い、
               最善の「売れる形」を追求します。
@@ -220,7 +215,7 @@ export default function AboutClient() {
       <section className="py-20 md:py-32 px-6 md:px-16 lg:px-24">
         <div className="max-w-[700px] mx-auto">
           <ScrollReveal>
-            <p className="text-sm tracking-[0.2em] text-[#1a1a1a]/50 mb-16 uppercase font-medium">
+            <p className="text-sm tracking-[0.2em] text-white/50 mb-16 uppercase font-medium">
               Company
             </p>
           </ScrollReveal>
@@ -234,12 +229,12 @@ export default function AboutClient() {
             ].map(([dt, dd]) => (
               <div
                 key={dt}
-                className="flex flex-col md:flex-row md:gap-16 py-5 border-b border-[#1a1a1a]/10"
+                className="flex flex-col md:flex-row md:gap-16 py-5 border-b border-white/10"
               >
-                <dt className="text-sm text-[#1a1a1a]/50 md:w-32 shrink-0 mb-1 md:mb-0">
+                <dt className="text-sm text-white/40 md:w-32 shrink-0 mb-1 md:mb-0">
                   {dt}
                 </dt>
-                <dd className="text-[#1a1a1a]/80">{dd}</dd>
+                <dd className="text-white/75">{dd}</dd>
               </div>
             ))}
           </dl>

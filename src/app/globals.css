@@ -138,6 +138,18 @@ a:hover {
   -webkit-backdrop-filter: blur(12px);
 }
 
+/* Dark page theme — About & Journal */
+.dark-page {
+  background: #1a1a1a;
+}
+
+.content-wrapper .dark-page section,
+.content-wrapper .dark-page article {
+  background: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 /* CMS pages: restore normal cursor */
 [style*="cursor: auto"],
 [style*="cursor: auto"] * {
