@@ -12,6 +12,29 @@ interface Props {
   entry: JournalEntry;
 }
 
+/** Render inline formatting (<strong>) within text */
+function renderInline(text: string): React.ReactNode[] {
+  const parts: React.ReactNode[] = [];
+  let rem = text;
+  let k = 0;
+  while (rem.length > 0) {
+    const m = rem.match(/<strong>(.*?)<\/strong>/);
+    if (m && m.index !== undefined) {
+      if (m.index > 0) parts.push(rem.slice(0, m.index));
+      parts.push(
+        <strong key={k++} className="text-white font-semibold">
+          {m[1]}
+        </strong>
+      );
+      rem = rem.slice(m.index + m[0].length);
+    } else {
+      parts.push(rem);
+      break;
+    }
+  }
+  return parts;
+}
+
 export default function JournalArticleClient({ entry }: Props) {
   const { combinedProgress, setArticleColor } = useColor();
 
@@ -19,7 +42,135 @@ export default function JournalArticleClient({ entry }: Props) {
     setArticleColor(entry.themeColor);
   }, [entry.themeColor, setArticleColor]);
 
-  const paragraphs = entry.content.split("\n\n").filter(Boolean);
+  const blocks = entry.content.split("\n\n").filter(Boolean);
+
+  const renderBlock = (block: string, i: number) => {
+    const b = block.trim();
+
+    // Headings
+    const h2 = b.match(/^<h2>([\s\S]*?)<\/h2>$/);
+    if (h2) {
+      return (
+        <ScrollReveal key={i} delay={i * 0.05}>
+          <h2
+            className="text-white mt-16 mb-6"
+            style={{ fontSize: "clamp(1.3rem, 3vw, 1.8rem)", fontWeight: 300, lineHeight: 1.6 }}
+          >
+            {h2[1]}
+          </h2>
+        </ScrollReveal>
+      );
+    }
+
+    const h3 = b.match(/^<h3>([\s\S]*?)<\/h3>$/);
+    if (h3) {
+      return (
+        <ScrollReveal key={i} delay={i * 0.05}>
+          <h3
+            className="text-white/85 mt-12 mb-4"
+            style={{ fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)", fontWeight: 400, lineHeight: 1.6 }}
+          >
+            {h3[1]}
+          </h3>
+        </ScrollReveal>
+      );
+    }
+
+    const h4 = b.match(/^<h4>([\s\S]*?)<\/h4>$/);
+    if (h4) {
+      return (
+        <ScrollReveal key={i} delay={i * 0.05}>
+          <h4
+            className="text-white/80 mt-8 mb-3"
+            style={{ fontSize: "clamp(1rem, 2vw, 1.15rem)", fontWeight: 500, lineHeight: 1.6 }}
+          >
+            {h4[1]}
+          </h4>
+        </ScrollReveal>
+      );
+    }
+
+    // Image
+    const img = b.match(/^<img\s+src="([^"]*)"(?:\s+alt="([^"]*)")?\s*\/?>$/);
+    if (img) {
+      return (
+        <ScrollReveal key={i} delay={i * 0.05}>
+          <div className="my-10 relative aspect-[16/9] bg-white/[0.05] rounded-md overflow-hidden">
+            <Image src={img[1]} alt={img[2] || ""} fill className="object-cover" />
+          </div>
+        </ScrollReveal>
+      );
+    }
+
+    // Unordered list
+    if (b.startsWith("<ul>") || b.startsWith("<ul ")) {
+      const items = [...b.matchAll(/<li>(.*?)<\/li>/g)].map((m) => m[1]);
+      return (
+        <ScrollReveal key={i} delay={i * 0.05}>
+          <ul className="list-disc list-inside space-y-2 my-6 text-white/65 leading-[2]">
+            {items.map((item, j) => (
+              <li key={j}>{renderInline(item)}</li>
+            ))}
+          </ul>
+        </ScrollReveal>
+      );
+    }
+
+    // Table
+    if (b.startsWith("<table>") || b.startsWith("<table ")) {
+      const rows = [...b.matchAll(/<tr>(.*?)<\/tr>/g)].map((m) => m[1]);
+      return (
+        <ScrollReveal key={i} delay={i * 0.05}>
+          <div className="my-8 overflow-x-auto">
+            <table className="w-full border-collapse text-sm">
+              <tbody>
+                {rows.map((row, ri) => {
+                  const isHeader = row.includes("<th>");
+                  const cells = isHeader
+                    ? [...row.matchAll(/<th>(.*?)<\/th>/g)].map((m) => m[1])
+                    : [...row.matchAll(/<td>(.*?)<\/td>/g)].map((m) => m[1]);
+                  return (
+                    <tr
+                      key={ri}
+                      className={
+                        isHeader
+                          ? "border-b border-white/15"
+                          : "border-b border-white/5"
+                      }
+                    >
+                      {cells.map((c, ci) =>
+                        isHeader ? (
+                          <th
+                            key={ci}
+                            className="text-left py-3 px-4 font-medium text-white/80"
+                          >
+                            {renderInline(c)}
+                          </th>
+                        ) : (
+                          <td key={ci} className="py-3 px-4 text-white/60">
+                            {renderInline(c)}
+                          </td>
+                        )
+                      )}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </ScrollReveal>
+      );
+    }
+
+    // Plain paragraph with inline formatting
+    return (
+      <ScrollReveal key={i} delay={i * 0.05}>
+        <p className="text-white/65 leading-[2.2] mb-8">
+          {renderInline(b)}
+        </p>
+      </ScrollReveal>
+    );
+  };
 
   return (
     <div className="dark-page">
@@ -64,11 +215,11 @@ export default function JournalArticleClient({ entry }: Props) {
       </section>
 
       {/* Eyecatch image */}
-      <section className="py-10 px-6 md:px-16 lg:px-24">
-        <div className="max-w-[900px] mx-auto">
-          <ScrollReveal>
-            <div className="relative aspect-[2/1] bg-white/[0.05] overflow-hidden">
-              {entry.eyecatch ? (
+      {entry.eyecatch && (
+        <section className="py-10 px-6 md:px-16 lg:px-24">
+          <div className="max-w-[900px] mx-auto">
+            <ScrollReveal>
+              <div className="relative aspect-[2/1] bg-white/[0.05] overflow-hidden">
                 <Image
                   src={entry.eyecatch}
                   alt={entry.eyecatchAlt || entry.title}
@@ -76,73 +227,16 @@ export default function JournalArticleClient({ entry }: Props) {
                   className="object-cover"
                   priority
                 />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-white/20 text-sm tracking-wider">
-                    アイキャッチ画像
-                  </p>
-                </div>
-              )}
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+      )}
 
       {/* Article body */}
       <section className="pb-32 px-6 md:px-16 lg:px-24">
         <div className="max-w-[700px] mx-auto">
-          {paragraphs.map((paragraph, i) => {
-            const h2Match = paragraph.match(/^<h2>(.*?)<\/h2>$/);
-            const h3Match = paragraph.match(/^<h3>(.*?)<\/h3>$/);
-            const h4Match = paragraph.match(/^<h4>(.*?)<\/h4>$/);
-
-            if (h2Match) {
-              return (
-                <ScrollReveal key={i} delay={i * 0.05}>
-                  <h2
-                    className="text-white mt-16 mb-6"
-                    style={{ fontSize: "clamp(1.3rem, 3vw, 1.8rem)", fontWeight: 300, lineHeight: 1.6 }}
-                  >
-                    {h2Match[1]}
-                  </h2>
-                </ScrollReveal>
-              );
-            }
-
-            if (h3Match) {
-              return (
-                <ScrollReveal key={i} delay={i * 0.05}>
-                  <h3
-                    className="text-white/85 mt-12 mb-4"
-                    style={{ fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)", fontWeight: 400, lineHeight: 1.6 }}
-                  >
-                    {h3Match[1]}
-                  </h3>
-                </ScrollReveal>
-              );
-            }
-
-            if (h4Match) {
-              return (
-                <ScrollReveal key={i} delay={i * 0.05}>
-                  <h4
-                    className="text-white/80 mt-8 mb-3"
-                    style={{ fontSize: "clamp(1rem, 2vw, 1.15rem)", fontWeight: 500, lineHeight: 1.6 }}
-                  >
-                    {h4Match[1]}
-                  </h4>
-                </ScrollReveal>
-              );
-            }
-
-            return (
-              <ScrollReveal key={i} delay={i * 0.05}>
-                <p className="text-white/65 leading-[2.2] mb-8">
-                  {paragraph}
-                </p>
-              </ScrollReveal>
-            );
-          })}
+          {blocks.map((block, i) => renderBlock(block, i))}
         </div>
       </section>
 

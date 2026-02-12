@@ -40,6 +40,19 @@ export async function PUT(
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
+    // If slug is being changed, check for duplicates
+    if (body.slug && body.slug !== slug) {
+      const duplicate = entries.some(
+        (e: { slug: string }, i: number) => i !== index && e.slug === body.slug
+      );
+      if (duplicate) {
+        return NextResponse.json(
+          { error: "このスラッグは既に使用されています" },
+          { status: 409 }
+        );
+      }
+    }
+
     entries[index] = { ...entries[index], ...body };
     writeEntries(entries);
 
