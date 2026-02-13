@@ -3,18 +3,30 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TiptapImage from "@tiptap/extension-image";
-import { Table } from "@tiptap/extension-table";
 import TableRow from "@tiptap/extension-table-row";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
-import { Highlight } from "@tiptap/extension-highlight";
-import { Underline } from "@tiptap/extension-underline";
-import { TextAlign } from "@tiptap/extension-text-align";
-import { Link } from "@tiptap/extension-link";
-import { Color } from "@tiptap/extension-color";
-import { TextStyle } from "@tiptap/extension-text-style";
-import { Placeholder } from "@tiptap/extension-placeholder";
 import { useRef, useCallback, useEffect, useState } from "react";
+
+/* Some Tiptap extensions have inconsistent ESM export handling in Turbopack.
+   Use wildcard imports and pick either the named export or default. */
+import * as TableMod from "@tiptap/extension-table";
+import * as HighlightMod from "@tiptap/extension-highlight";
+import * as UnderlineMod from "@tiptap/extension-underline";
+import * as TextAlignMod from "@tiptap/extension-text-align";
+import * as LinkMod from "@tiptap/extension-link";
+import * as ColorMod from "@tiptap/extension-color";
+import * as TextStyleMod from "@tiptap/extension-text-style";
+import * as PlaceholderMod from "@tiptap/extension-placeholder";
+
+const Table = (TableMod as Record<string, unknown>).Table ?? (TableMod as Record<string, unknown>).default;
+const Highlight = (HighlightMod as Record<string, unknown>).Highlight ?? (HighlightMod as Record<string, unknown>).default;
+const Underline = (UnderlineMod as Record<string, unknown>).Underline ?? (UnderlineMod as Record<string, unknown>).default;
+const TextAlign = (TextAlignMod as Record<string, unknown>).TextAlign ?? (TextAlignMod as Record<string, unknown>).default;
+const TiptapLink = (LinkMod as Record<string, unknown>).Link ?? (LinkMod as Record<string, unknown>).default;
+const Color = (ColorMod as Record<string, unknown>).Color ?? (ColorMod as Record<string, unknown>).default;
+const TextStyle = (TextStyleMod as Record<string, unknown>).TextStyle ?? (TextStyleMod as Record<string, unknown>).default;
+const Placeholder = (PlaceholderMod as Record<string, unknown>).Placeholder ?? (PlaceholderMod as Record<string, unknown>).default;
 
 interface Props {
   content: string;
@@ -106,22 +118,22 @@ export default function RichEditor({ content, onChange, onUploadImage }: Props) 
       TiptapImage.configure({
         HTMLAttributes: { class: "rich-img" },
       }),
-      Table.configure({ resizable: false }),
+      (Table as any).configure({ resizable: false }),
       TableRow,
       TableCell,
       TableHeader,
-      Highlight.configure({ multicolor: true }),
-      Underline,
-      TextAlign.configure({
+      (Highlight as any).configure({ multicolor: true }),
+      Underline as any,
+      (TextAlign as any).configure({
         types: ["heading", "paragraph"],
       }),
-      Link.configure({
+      (TiptapLink as any).configure({
         openOnClick: false,
         HTMLAttributes: { class: "rich-link" },
       }),
-      TextStyle,
-      Color,
-      Placeholder.configure({
+      TextStyle as any,
+      Color as any,
+      (Placeholder as any).configure({
         placeholder: "記事の本文を入力してください...",
       }),
     ],
