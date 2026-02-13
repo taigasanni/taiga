@@ -111,6 +111,7 @@ export default function RichEditor({ content, onChange, onUploadImage }: Props) 
   const [linkUrl, setLinkUrl] = useState("");
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit.configure({
         heading: { levels: [2, 3, 4] },
