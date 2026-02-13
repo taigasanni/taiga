@@ -3,6 +3,9 @@
 import { useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const RichEditor = dynamic(() => import("./RichEditor"), { ssr: false });
 
 interface FormData {
   slug: string;
@@ -30,17 +33,46 @@ function generateSlug(title: string): string {
     .slice(0, 60);
 }
 
+/** Convert old \n\n-based content to HTML for the editor */
+function convertLegacyToHtml(content: string): string {
+  // Already HTML (from Tiptap) — contains <p> tags
+  if (content.includes("<p>")) return content;
+  // Empty
+  if (!content.trim()) return "";
+
+  const blocks = content.split("\n\n").filter(Boolean);
+  return blocks
+    .map((b) => {
+      const t = b.trim();
+      // Block-level tags: keep as-is
+      if (
+        t.startsWith("<h2>") ||
+        t.startsWith("<h3>") ||
+        t.startsWith("<h4>") ||
+        t.startsWith("<ul>") ||
+        t.startsWith("<ol>") ||
+        t.startsWith("<table>") ||
+        t.startsWith("<img") ||
+        t.startsWith("<blockquote>") ||
+        t.startsWith("<hr")
+      ) {
+        return t;
+      }
+      // Wrap plain text in <p>
+      return `<p>${t}</p>`;
+    })
+    .join("");
+}
+
 export default function CmsArticleForm({ initialData, mode }: Props) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const eyecatchInputRef = useRef<HTMLInputElement>(null);
-  const bodyImageInputRef = useRef<HTMLInputElement>(null);
 
-  const [form, setForm] = useState<FormData>({
+  const [form, setForm] = useState<FormData>(() => ({
     slug: initialData?.slug || "",
     title: initialData?.title || "",
     date:
@@ -48,11 +80,11 @@ export default function CmsArticleForm({ initialData, mode }: Props) {
       new Date().toISOString().slice(0, 10).replace(/-/g, "."),
     category: initialData?.category || "Marketing",
     excerpt: initialData?.excerpt || "",
-    content: initialData?.content || "",
+    content: convertLegacyToHtml(initialData?.content || ""),
     themeColor: initialData?.themeColor || { h: 200, s: 20, l: 85 },
     eyecatch: initialData?.eyecatch || "",
     eyecatchAlt: initialData?.eyecatchAlt || "",
-  });
+  }));
 
   const update = (field: keyof FormData, value: unknown) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -66,7 +98,7 @@ export default function CmsArticleForm({ initialData, mode }: Props) {
   };
 
   // ── Image upload ──
-  const uploadFile = async (file: File): Promise<string | null> => {
+  const uploadFile = useCallback(async (file: File): Promise<string | null> => {
     setUploading(true);
     try {
       const fd = new FormData();
@@ -85,7 +117,7 @@ export default function CmsArticleForm({ initialData, mode }: Props) {
     } finally {
       setUploading(false);
     }
-  };
+  }, []);
 
   const handleEyecatchUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -94,46 +126,6 @@ export default function CmsArticleForm({ initialData, mode }: Props) {
     if (p) {
       update("eyecatch", p);
       if (!form.eyecatchAlt) update("eyecatchAlt", form.title || file.name);
-    }
-    e.target.value = "";
-  };
-
-  // ── Toolbar: insert at cursor ──
-  const insertAtCursor = useCallback(
-    (before: string, after: string = "") => {
-      const ta = textareaRef.current;
-      if (!ta) return;
-      const start = ta.selectionStart;
-      const end = ta.selectionEnd;
-      const text = form.content;
-      const selected = text.slice(start, end);
-      const inserted = before + selected + after;
-      const newContent = text.slice(0, start) + inserted + text.slice(end);
-      update("content", newContent);
-      requestAnimationFrame(() => {
-        ta.focus();
-        const cur = start + before.length + selected.length;
-        ta.setSelectionRange(cur, cur);
-      });
-    },
-    [form.content]
-  );
-
-  const handleBold = () => insertAtCursor("<strong>", "</strong>");
-  const handleList = () =>
-    insertAtCursor("\n\n<ul>\n<li>項目1</li>\n<li>項目2</li>\n<li>項目3</li>\n</ul>\n\n");
-  const handleTable = () =>
-    insertAtCursor(
-      "\n\n<table>\n<tr><th>見出し1</th><th>見出し2</th><th>見出し3</th></tr>\n<tr><td>データ1</td><td>データ2</td><td>データ3</td></tr>\n<tr><td>データ4</td><td>データ5</td><td>データ6</td></tr>\n</table>\n\n"
-    );
-  const handleHeading = (tag: string) => insertAtCursor(`\n\n<${tag}>`, `</${tag}>\n\n`);
-
-  const handleBodyImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const p = await uploadFile(file);
-    if (p) {
-      insertAtCursor(`\n\n<img src="${p}" alt="${file.name.replace(/\.[^.]+$/, "")}" />\n\n`);
     }
     e.target.value = "";
   };
@@ -172,95 +164,9 @@ export default function CmsArticleForm({ initialData, mode }: Props) {
     }
   };
 
-  // ── Inline renderer ──
-  const renderInline = (text: string) => {
-    const parts: React.ReactNode[] = [];
-    let rem = text;
-    let k = 0;
-    while (rem.length > 0) {
-      const sm = rem.match(/<strong>(.*?)<\/strong>/);
-      if (sm && sm.index !== undefined) {
-        if (sm.index > 0) parts.push(rem.slice(0, sm.index));
-        parts.push(<strong key={k++} className="font-semibold">{sm[1]}</strong>);
-        rem = rem.slice(sm.index + sm[0].length);
-      } else {
-        parts.push(rem);
-        break;
-      }
-    }
-    return parts;
-  };
-
-  // ── Preview renderer ──
-  const renderPreview = () => {
-    const blocks = form.content.split("\n\n").filter(Boolean);
-    const nodes: React.ReactNode[] = [];
-    for (let i = 0; i < blocks.length; i++) {
-      const b = blocks[i].trim();
-      const h2 = b.match(/^<h2>([\s\S]*?)<\/h2>$/);
-      if (h2) { nodes.push(<h2 key={i} className="text-xl font-light mt-10 mb-4 text-[#1a1a1a]">{h2[1]}</h2>); continue; }
-      const h3 = b.match(/^<h3>([\s\S]*?)<\/h3>$/);
-      if (h3) { nodes.push(<h3 key={i} className="text-lg font-normal mt-8 mb-3 text-[#1a1a1a]/90">{h3[1]}</h3>); continue; }
-      const h4 = b.match(/^<h4>([\s\S]*?)<\/h4>$/);
-      if (h4) { nodes.push(<h4 key={i} className="text-base font-medium mt-6 mb-2 text-[#1a1a1a]/85">{h4[1]}</h4>); continue; }
-      const img = b.match(/^<img\s+src="([^"]*)"(?:\s+alt="([^"]*)")?\s*\/?>$/);
-      if (img) { nodes.push(<div key={i} className="my-8"><img src={img[1]} alt={img[2] || ""} className="w-full rounded-md" /></div>); continue; }
-      if (b.startsWith("<ul>") || b.startsWith("<ul ")) {
-        const items = [...b.matchAll(/<li>(.*?)<\/li>/g)].map((m) => m[1]);
-        nodes.push(
-          <ul key={i} className="list-disc list-inside space-y-1.5 my-4 text-[#1a1a1a]/70 leading-[2]">
-            {items.map((it, j) => <li key={j}>{renderInline(it)}</li>)}
-          </ul>
-        );
-        continue;
-      }
-      if (b.startsWith("<table>") || b.startsWith("<table ")) {
-        const rows = [...b.matchAll(/<tr>(.*?)<\/tr>/g)].map((m) => m[1]);
-        nodes.push(
-          <div key={i} className="my-6 overflow-x-auto">
-            <table className="w-full border-collapse text-sm">
-              <tbody>
-                {rows.map((row, ri) => {
-                  const isH = row.includes("<th>");
-                  const cells = isH
-                    ? [...row.matchAll(/<th>(.*?)<\/th>/g)].map((m) => m[1])
-                    : [...row.matchAll(/<td>(.*?)<\/td>/g)].map((m) => m[1]);
-                  return (
-                    <tr key={ri} className={isH ? "border-b-2 border-[#1a1a1a]/10" : "border-b border-[#1a1a1a]/5"}>
-                      {cells.map((c, ci) =>
-                        isH
-                          ? <th key={ci} className="text-left py-2.5 px-3 font-medium text-[#1a1a1a]/80">{renderInline(c)}</th>
-                          : <td key={ci} className="py-2.5 px-3 text-[#1a1a1a]/65">{renderInline(c)}</td>
-                      )}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        );
-        continue;
-      }
-      nodes.push(<p key={i} className="text-[#1a1a1a]/70 leading-[2] mb-4">{renderInline(b)}</p>);
-    }
-    return nodes;
-  };
-
-  const ToolBtn = ({ label, onClick, title }: { label: string; onClick: () => void; title: string }) => (
-    <button
-      type="button"
-      onClick={onClick}
-      title={title}
-      className="px-3 py-1.5 text-xs border border-[#e5e5e5] rounded-md hover:bg-[#f5f5f5] transition-colors bg-white cursor-pointer text-[#1a1a1a]/70 font-medium"
-    >
-      {label}
-    </button>
-  );
-
   return (
     <div>
       <input ref={eyecatchInputRef} type="file" accept="image/*" onChange={handleEyecatchUpload} className="hidden" />
-      <input ref={bodyImageInputRef} type="file" accept="image/*" onChange={handleBodyImage} className="hidden" />
 
       {/* Top bar */}
       <div className="flex items-center justify-between mb-8">
@@ -297,22 +203,27 @@ export default function CmsArticleForm({ initialData, mode }: Props) {
       )}
 
       {showPreview ? (
-        <div className="bg-white rounded-xl border border-[#e5e5e5] p-8 md:p-12">
-          <div className="max-w-[700px]">
+        /* ── Preview: render HTML as it would appear on the article page ── */
+        <div className="bg-[#1a1a1a] rounded-xl border border-[#333] p-8 md:p-12">
+          <div className="max-w-[700px] mx-auto">
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-xs text-[#1a1a1a]/40">{form.category}</span>
-              <span className="text-xs text-[#1a1a1a]/30">{form.date}</span>
+              <span className="text-xs text-white/40">{form.category}</span>
+              <span className="text-xs text-white/30">{form.date}</span>
             </div>
-            <h1 className="text-2xl font-light text-[#1a1a1a] mb-8">{form.title}</h1>
+            <h1 className="text-2xl font-light text-white mb-8">{form.title}</h1>
             {form.eyecatch && (
-              <div className="mb-8 relative aspect-[2/1] bg-[#f5f5f5] overflow-hidden rounded-md">
+              <div className="mb-8 relative aspect-[2/1] bg-white/5 overflow-hidden rounded-md">
                 <Image src={form.eyecatch} alt={form.eyecatchAlt || form.title} fill className="object-cover" />
               </div>
             )}
-            <div>{renderPreview()}</div>
+            <div
+              className="article-html"
+              dangerouslySetInnerHTML={{ __html: form.content }}
+            />
           </div>
         </div>
       ) : (
+        /* ── Editor mode ── */
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Main editor */}
           <div className="space-y-5">
@@ -338,32 +249,14 @@ export default function CmsArticleForm({ initialData, mode }: Props) {
               />
             </div>
 
-            {/* Content with toolbar */}
+            {/* Visual rich-text editor */}
             <div className="bg-white rounded-xl border border-[#e5e5e5] p-6">
               <label className="block text-xs font-medium text-[#1a1a1a]/50 mb-3">本文</label>
-              <div className="flex flex-wrap items-center gap-1.5 mb-3 pb-3 border-b border-[#e5e5e5]">
-                <ToolBtn label="B" onClick={handleBold} title="太字 <strong>" />
-                <span className="w-px h-5 bg-[#e5e5e5]" />
-                <ToolBtn label="H2" onClick={() => handleHeading("h2")} title="見出し2" />
-                <ToolBtn label="H3" onClick={() => handleHeading("h3")} title="見出し3" />
-                <ToolBtn label="H4" onClick={() => handleHeading("h4")} title="見出し4" />
-                <span className="w-px h-5 bg-[#e5e5e5]" />
-                <ToolBtn label="箇条書き" onClick={handleList} title="箇条書きリスト" />
-                <ToolBtn label="表" onClick={handleTable} title="テーブル挿入" />
-                <span className="w-px h-5 bg-[#e5e5e5]" />
-                <ToolBtn label="画像挿入" onClick={() => bodyImageInputRef.current?.click()} title="本文に画像を挿入" />
-              </div>
-              <textarea
-                ref={textareaRef}
-                value={form.content}
-                onChange={(e) => update("content", e.target.value)}
-                placeholder="記事の本文を入力..."
-                rows={25}
-                className="w-full border border-[#e5e5e5] rounded-lg px-4 py-3 outline-none focus:border-[#1a1a1a]/30 transition-colors resize-y text-sm leading-relaxed font-mono"
+              <RichEditor
+                content={form.content}
+                onChange={(html) => update("content", html)}
+                onUploadImage={uploadFile}
               />
-              <p className="mt-2 text-xs text-[#1a1a1a]/30">
-                ツールバーでリッチコンテンツを挿入 / 段落はダブル改行で区切り
-              </p>
             </div>
           </div>
 
